@@ -78,9 +78,9 @@ public class NeoDailies {
 	public static final String PETNAME = "CHANGE_ME"; //Change this to your main pet's name on your neopets account
 	public static final String PET_ZAPPED = "CHANGE_ME"; //Change this to your lab rat's name
 	public static final String WISHING_WELL_ITEM = "Turned Tooth"; //Shouldn't need to be changed. This is the item you wish for.
+	public static final String BD_OPPONENT = "Koi Warrior"; //Change this as needed to the opponent you fight.
 	public static final boolean RUNNING_ON_LAPTOP = true; //Shouldn't need to be changed. This is for my (TheLazyGamer) own convenience to run it on my Pi.
 	public static final int GRAVE_PETPET = 1; //Change this as needed. This is the index of the petpet. 1 would be your first pet's petpet.
-	public static final int BD_OPPONENT = 19; //Change this as needed. 19 for koi warrior. 44 for robot
 
 	//These shouldn't need changing, but the costs may need occasional updating. Only used for kitchen quest.
 	public static final int AVERAGE_ONE_DUBLOON_COST = 700;
@@ -106,11 +106,13 @@ public class NeoDailies {
 	 * @throws Exception This should never happen, but Java requires it.
 	 */
 	public static void main(String[] argv) throws Exception {
-		IGNORED_ITEMS.add("Dubloon");
-		/*IGNORED_ITEMS.add("Codestone");*/
+		/*IGNORED_ITEMS.add("Dubloon");
+		IGNORED_ITEMS.add("Codestone");*/
 		IGNORED_ITEMS.add("Birthday Cupcake");
 		IGNORED_ITEMS.add(" Map");
 		IGNORED_ITEMS.add(" map");
+		IGNORED_ITEMS.add("Wraith Ectoplasm");
+		IGNORED_ITEMS.add("Taelias Concoction");
 
 		File logFile = new File("BotLog.log");
 		logWriter = new FileWriter(logFile, true);
@@ -174,7 +176,7 @@ public class NeoDailies {
 					if (RUNNING_ON_LAPTOP) {
 						Runtime.getRuntime().exec("SetupWindows.bat");
 					}
-					sleepMode(20000);
+					sleepMode(10000);
 
 					oncePerDay(driver, "Bank", "EEEE");
 
@@ -198,7 +200,7 @@ public class NeoDailies {
 
 					oncePerInterval(driver, "Employment", 3600);
 
-					oncePerInterval(driver, "KitchenQuest", 3600);
+					//oncePerInterval(driver, "KitchenQuest", 3600);
 
 					oncePerDay(driver, "Tombola", "EEEE");
 
@@ -242,13 +244,15 @@ public class NeoDailies {
 
 					oncePerDay(driver, "Meteor", "EEEE");
 
-					oncePerDay(driver, "IslandMystic", "EEEE");
+					//oncePerDay(driver, "IslandMystic", "EEEE");
 
 					oncePerDay(driver, "MoodImprove", "EEEE");
 
 					oncePerDay(driver, "Faeries", "EEEE");
 
-					oncePerInterval(driver, "KikoPop", (long) 7200);
+					//oncePerDay(driver, "Advent", "EEEE");
+
+					oncePerDay(driver, "KikoPop", "EEEE");
 
 					oncePerDay(driver, "MonthlyFreeby", "MMM");
 
@@ -354,6 +358,7 @@ public class NeoDailies {
 	 * @see NeoDailies#runScarab21(WebDriver) runScarab21
 	 * @see NeoDailies#runBank(WebDriver) runBank
 	 * @see NeoDailies#runAltadorCouncil(WebDriver) runAltadorCouncil
+	 * @see NeoDailies#runKikoPop(WebDriver) runKikoPop
 	 * @see NeoDailies#runNeggCave(WebDriver) runNeggCave
 	 * @see NeoDailies#runShopOfOffers(WebDriver) runShopOfOffers
 	 * @see NeoDailies#runAppleBobbing(WebDriver) runAppleBobbing
@@ -432,6 +437,9 @@ public class NeoDailies {
 			else if (xmlNode.equals("AltadorCouncil")) {
 				successTask = runAltadorCouncil(driver);
 			}
+			else if (xmlNode.equals("KikoPop")) {
+				successTask = runKikoPop(driver);
+			}
 			else if (xmlNode.equals("NeggCave")) {
 				successTask = runNeggCave(driver);
 			}
@@ -494,6 +502,9 @@ public class NeoDailies {
 			}
 			else if (xmlNode.equals("Faeries")) {
 				successTask = runFaeries(driver);
+			}
+			else if (xmlNode.equals("Advent")) {
+				successTask = runAdvent(driver);
 			}
 			else if (xmlNode.equals("LabRay")) {
 				successTask = runLabRay(driver);
@@ -1617,8 +1628,8 @@ public class NeoDailies {
 	private static boolean runTDMBGPOP(WebDriver driver) {
 		logMessage("Starting runTDMBGPOP");
 		driver.get("http://www.neopets.com/faerieland/tdmbgpop.phtml");
-		if (isElementPresentXP("//*[@id=\"content\"]/table/tbody/tr/td[2]/div[2]/form/input[2]", driver)) {
-			driver.findElement(By.xpath("//*[@id=\"content\"]/table/tbody/tr/td[2]/div[2]/form/input[2]")).click();
+		if (isElementPresentXP("//*[@id=\"content\"]/table/tbody/tr/td[2]/div[3]/form/input[2]", driver)) {
+			driver.findElement(By.xpath("//*[@id=\"content\"]/table/tbody/tr/td[2]/div[3]/form/input[2]")).click();
 			logMessage("Successfully ending runTDMBGPOP");
 			return true;
 		}
@@ -1645,7 +1656,14 @@ public class NeoDailies {
 				//Click continue 1-P
 				driver.findElement(By.xpath("//*[@id=\"bdFightStep2\"]/div[4]")).click();
 				//Select our opponent
-				driver.findElement(By.xpath("//*[@id=\"npcTable\"]/tbody/tr[" + BD_OPPONENT + "]/td[4]/div[1]")).click();
+				int opponentIndex = 3;
+				for (; isElementPresentXP("//*[@id=\"npcTable\"]/tbody/tr[" + opponentIndex + "]/td[2]", driver); opponentIndex++) {
+					String opponentName = driver.findElement(By.xpath("//*[@id=\"npcTable\"]/tbody/tr[" + opponentIndex + "]/td[2]")).getText();
+					if (opponentName.contains(BD_OPPONENT)) {
+						break;
+					}
+				}
+				driver.findElement(By.xpath("//*[@id=\"npcTable\"]/tbody/tr[" + opponentIndex + "]/td[4]/div[1]")).click();
 				//Start the battle page
 				driver.findElement(By.id("bdFightStep3FightButton")).click();
 				sleepMode(5000);
@@ -1662,23 +1680,23 @@ public class NeoDailies {
 				//Click the first equip slot
 				sleepMode(5000);
 				driver.findElement(By.xpath("//*[@id=\"p1e1m\"]/div")).click();
-				//Select Ramtors Spellbook
-				sleepMode(5000);
+				//Select Turned Tooth
+				sleepMode(2000);
 				driver.findElement(By.xpath("//*[@id=\"p1equipment\"]/div[3]/ul/li[1]/img")).click();
 				//Click the second equip slot
-				sleepMode(5000);
+				sleepMode(2000);
 				driver.findElement(By.xpath("//*[@id=\"p1e2m\"]/div")).click();
 				//Select Skeletal Fire gun
-				sleepMode(5000);
+				sleepMode(2000);
 				driver.findElement(By.xpath("//*[@id=\"p1equipment\"]/div[3]/ul/li[2]/img")).click();
 				//Click the faerie ability slot
-				sleepMode(5000);
+				sleepMode(2000);
 				driver.findElement(By.xpath("//*[@id=\"p1am\"]/div")).click();
 				//Click lens flare
-				sleepMode(5000);
-				driver.findElement(By.xpath("//*[@id=\"p1ability\"]/div[3]/table/tbody/tr/td[1]/div/div")).click();
+				sleepMode(2000);
+				driver.findElement(By.xpath("//*[@id=\"p1ability\"]/div[3]/table/tbody/tr/td[2]/div/div")).click();
 				//Click Fight to kill opponent
-				sleepMode(3000);
+				sleepMode(2000);
 				driver.findElement(By.id("fight")).click();
 				//Click Collect Rewards
 				int counter = 0;
@@ -1690,7 +1708,7 @@ public class NeoDailies {
 				//Click Play Again
 				sleepMode(5000);
 				String rewardText = driver.findElement(By.id("bd_rewards")).getText();
-				if (rewardText.contains("You have reached the item limit for today!") && rewardText.contains("You have reached the NP limit for today!")) {
+				if (rewardText.contains("You have reached the item limit for today!") || rewardText.contains("You have reached the NP limit for today!")) {
 					break;
 				}
 				driver.findElement(By.id("bdplayagain")).click();
@@ -1846,6 +1864,7 @@ public class NeoDailies {
 		logMessage("Starting runDailyPuzzle");
 		String resultLine = "";
 
+		try {
 		URL apiUrl = new URL("http://www.jellyneo.net/?go=dailypuzzle");
 		HttpURLConnection apiCon = (HttpURLConnection) apiUrl.openConnection();
 		apiCon.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Safari/537.36");
@@ -1858,6 +1877,11 @@ public class NeoDailies {
 				resultLine = resultLine.substring(resultLine.indexOf("blue") + 6, resultLine.lastIndexOf("<")).trim();
 				break;
 			}
+		}
+		
+		}
+		catch (Exception ex) {
+			return false;
 		}
 
 		driver.get("http://www.neopets.com/community/index.phtml");
@@ -1896,6 +1920,8 @@ public class NeoDailies {
 
 		ArrayList<String> acrossList = new ArrayList<String>();
 		ArrayList<String> downList = new ArrayList<String>();
+		
+		try {
 
 		URL apiUrl = new URL("http://www.jellyneo.net/?go=faerie_crossword");
 		HttpURLConnection apiCon = (HttpURLConnection) apiUrl.openConnection();
@@ -1931,6 +1957,11 @@ public class NeoDailies {
 					//This error is normal. Don't need to do anything.
 				}
 			}
+		}
+		
+		}
+		catch (Exception ex) {
+			return false;
 		}
 
 		driver.get("http://www.neopets.com/games/crossword/index.phtml");
@@ -2431,29 +2462,40 @@ public class NeoDailies {
 		logMessage("Starting runStocks");
 
 		driver.get("http://www.neopets.com/stockmarket.phtml?type=list&bargain=true");
+		
+		String stockSource = driver.getPageSource();
+		
+		if (stockSource.contains("/marquee")) {
+			stockSource = stockSource.substring(stockSource.indexOf("marquee"), stockSource.indexOf("/marquee"));
 
-		for (int x = 2; isElementPresentXP("//*[@id=\"content\"]/table/tbody/tr/td[2]/div[2]/table/tbody/tr[" + x + "]/td[6]", driver); x++) {
+			String[] stockSourceArr = stockSource.split("><b");
 
-			if (driver.findElement(By.xpath("//*[@id=\"content\"]/table/tbody/tr/td[2]/div[2]/table/tbody/tr[" + x + "]/td[6]")).getText().equals("15")) {
-				String stockTicker = driver.findElement(By.xpath("//*[@id='content']/table/tbody/tr/td[2]/div[2]/table/tbody/tr[" + x + "]/td[2]/a")).getText();
+			for (int x = 1; x < stockSourceArr.length; x++) {
+				stockSourceArr[x] = stockSourceArr[x].substring(1, stockSourceArr[x].indexOf("<"));
+				String tickerPrice = stockSourceArr[x];
 
-				driver.get("http://www.neopets.com/stockmarket.phtml?type=buy&ticker=" + stockTicker);
+				tickerPrice = tickerPrice.substring(tickerPrice.indexOf(" ")+1, tickerPrice.lastIndexOf(" "));
 
-				if (isElementPresentName("amount_shares", driver)) {
-					driver.findElement(By.name("amount_shares")).clear();
-					driver.findElement(By.name("amount_shares")).sendKeys("1000");
-					driver.findElement(By.xpath("//*[@id=\"content\"]/table/tbody/tr/td[2]/div[2]/form/table/tbody/tr[3]/td/input")).click();
-					sleepMode(5000); //Allow time for purchase to process
-					logMessage("Successfully ending runStocks");
-					return true;
-				}
-				else {
-					logMessage("Failed ending 1 runStocks");
-					return false;
+				if (tickerPrice.equals("15")) {
+					logMessage("Found a stock for 15");
+					driver.get("http://www.neopets.com/stockmarket.phtml?type=buy&ticker=" + stockSourceArr[x].substring(0, stockSourceArr[x].indexOf(" ")));
+
+					if (isElementPresentName("amount_shares", driver)) {
+						driver.findElement(By.name("amount_shares")).clear();
+						driver.findElement(By.name("amount_shares")).sendKeys("1000");
+						driver.findElement(By.xpath("//*[@id=\"content\"]/table/tbody/tr/td[2]/div[2]/form/table/tbody/tr[3]/td/input")).click();
+						sleepMode(5000); //Allow time for purchase to process
+						logMessage("Successfully ending runStocks");
+						return true;
+					}
+					else {
+						logMessage("Failed ending 1 runStocks");
+						return false;
+					}
 				}
 			}
 		}
-		logMessage("Failed ending 2 runStocks");
+
 		return false;
 	}
 
@@ -2625,9 +2667,16 @@ public class NeoDailies {
 		logMessage("Starting runMoodImprove");
 		while (true) {
 			driver.get("http://www.neopets.com/worlds/roo/merrygoround.phtml");
-
-			String mood = driver.findElement(By.xpath("//*[@id=\"content\"]/table/tbody/tr/td[1]/div[1]/table/tbody/tr[4]/td/table/tbody/tr[3]/td[2]/b")).getText().trim();
-
+			String mood = "";
+			if (isElementPresentXP("//*[@id=\"content\"]/table/tbody/tr/td[1]/div[1]/table/tbody/tr[4]/td/table/tbody/tr[3]/td[2]/b", driver)) {
+				mood = driver.findElement(By.xpath("//*[@id=\"content\"]/table/tbody/tr/td[1]/div[1]/table/tbody/tr[4]/td/table/tbody/tr[3]/td[2]/b")).getText().trim();
+			}
+			else if (isElementPresentXP("//*[@id=\"content\"]/table/tbody/tr/td[1]/div[1]/table/tbody/tr[5]/td/table/tbody/tr[3]/td[2]/b", driver)) {
+				mood = driver.findElement(By.xpath("//*[@id=\"content\"]/table/tbody/tr/td[1]/div[1]/table/tbody/tr[5]/td/table/tbody/tr[3]/td[2]/b")).getText().trim();
+			}
+			else {
+				return false;
+			}
 			if (!mood.equals("delighted!")) {
 				driver.findElement(By.xpath("//input[@value='" + PETNAME + "']")).click();
 				driver.findElement(By.xpath("//input[@value='Go on the Ride!']")).click();
@@ -2642,6 +2691,30 @@ public class NeoDailies {
 	}
 
 	/**
+	 * Collects the daily Advent Calendar gift.
+	 * @param driver The WebDriver
+	 * @return A boolean telling if the activity successfully finished or not.
+	 * @see NeoDailies#oncePerDay(WebDriver, String, String) oncePerDay
+	 */
+	private static boolean runAdvent(WebDriver driver) {
+		logMessage("Starting runAdvent");
+
+		driver.get("http://www.neopets.com/winter/adventcalendar.phtml");
+		if (isElementPresentXP("//input[@value='Collect My Prize!!!']", driver)) {
+			driver.findElement(By.xpath("//input[@value='Collect My Prize!!!']")).click();
+		}/*
+		sleepMode(10000);
+		driver.get("http://www.neopets.com/winter/adventcalendar.phtml");
+		sleepMode(10000);
+		if (isElementPresentXP("//*[@id=\"dom_overlay_container\"]", driver)) {
+			driver.findElement(By.xpath("//*[@id=\"dom_overlay_container\"]")).click();
+		}*/
+
+		logMessage("Successfully ending runFaeries");
+		return true;
+	}
+
+	/**
 	 * Performs the user's daily faerie quest assuming they have the FQ cookie.
 	 * Will also visit the faerie festival daily if enabled.
 	 * @param driver The WebDriver
@@ -2652,6 +2725,16 @@ public class NeoDailies {
 		logMessage("Starting runFaeries");
 		//Uncomment this when the faerie festival rolls around (regularly September)
 		//driver.get("http://www.neopets.com/faeriefestival/");
+		
+		//Check if we're already on a FQ and complete it before taking our daily one
+		driver.get("http://www.neopets.com/market.phtml?type=wizard");
+
+		if (isElementPresentXP("//*[@id=\"content\"]/table/tbody/tr/td[2]/div[2]/p[1]/a[1]", driver)) { //Faerie quest link
+			logMessage("runFaeries ShopWizard FQ found");
+			if (!faerieQuest(driver)) {
+				return false;
+			}
+		}
 
 		driver.get("http://www.neopets.com/quests.phtml");
 
@@ -2691,9 +2774,7 @@ public class NeoDailies {
 			String firstHalfMessage = driver.findElement(By.xpath("/html/body/center/p[1]")).getText().replace("\n", " ").trim();
 			String secondHalfMessage = driver.findElement(By.xpath("/html/body/center/p[3]")).getText().replace("\n", " ").trim();
 			String message = firstHalfMessage + secondHalfMessage;
-			if (RUNNING_ON_LAPTOP) {
-				sendEmail(message);
-			}
+			sendEmail(message);
 		}
 		logMessage("Successfully ending runLabRay");
 		return true;
@@ -2776,111 +2857,118 @@ public class NeoDailies {
 	 */
 	private static boolean runFoodClub(WebDriver driver) {
 		logMessage("Starting runFoodClub");
-		driver.get("http://www.neopets.com/~boochi_target");
+		
+		Date date = new Date();
+		Calendar calendar = GregorianCalendar.getInstance();
+		calendar.setTime(date);
+		int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
+		
+		if (currentHour < 13) {
+			driver.get("http://www.neopets.com/~boochi_target");
 
-		String currentRound = "";
+			String currentRound = "";
 
-		if (isElementPresentXP("/html/body/center[3]/center[1]/center[1]/table/tbody/tr[3]/td[1]", driver)) {
-			currentRound = driver.findElement(By.xpath("/html/body/center[3]/center[1]/center[1]/table/tbody/tr[3]/td[1]")).getText().trim();
-		}
-		ArrayList<String> betInfoList = new ArrayList<String>();
-
-		Date currentDate = new Date();
-		String dateStop = "05/07/1999 01:00:00";
-
-		SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
-		String currentDateFormattedString = format.format(currentDate);
-		Date d1 = null;
-
-		Date d2 = null;
-
-		try {
-			d1 = format.parse(currentDateFormattedString);
-			d2 = format.parse(dateStop);
-		}
-		catch (Exception ex) {
-			//This error will never happen. Java syntax requires catching it.
-		}
-		//in milliseconds
-		long diff = d2.getTime() - d1.getTime();
-
-		long diffDays = diff / (24 * 60 * 60 * 1000);
-
-		//diffDays *= -1; Use this or the one below (not sure which is more efficient)
-		diffDays = -diffDays;
-		logMessage(diffDays + " days");
-
-		String daysSince1999May07 = String.valueOf(diffDays);
-
-		if (currentRound.equals(daysSince1999May07)) {
-			for (int x = 3; isElementPresentXP("/html/body/center[3]/center[1]/center[1]/table/tbody/tr[" + x + "]/td[3]", driver); x++) {
-				String betInfo = driver.findElement(By.xpath("/html/body/center[3]/center[1]/center[1]/table/tbody/tr[" + x + "]/td[2]")).getText().trim();
-				betInfoList.add(betInfo);
+			if (isElementPresentXP("/html/body/center[3]/center[1]/center[1]/table/tbody/tr[3]/td[1]", driver)) {
+				currentRound = driver.findElement(By.xpath("/html/body/center[3]/center[1]/center[1]/table/tbody/tr[3]/td[1]")).getText().trim();
 			}
+			ArrayList<String> betInfoList = new ArrayList<String>();
 
-			driver.get("http://www.neopets.com/pirates/foodclub.phtml?type=bet");
-			String betAmount = driver.findElement(By.xpath("//*[@id=\"content\"]/table/tbody/tr/td[2]/p[4]/b")).getText();
-			for (int x = 0; x < betInfoList.size(); x++) {
-				logMessage("BET " + x + " FOUND");
-				String[] betInfoArr = betInfoList.get(x).split("\n");
-				for (int n = 0; n < betInfoArr.length; n++) {
-					String bet = betInfoArr[n].trim();
-					String arenaName = bet.substring(0, bet.indexOf(":"));
-					logMessage("arenaName: " + arenaName);
-					String winningPirate = bet.substring(bet.indexOf(":") + 1, bet.length());
-					int xPathValue = 0;
-					if (arenaName.equals("Shipwreck")) {
-						xPathValue = 3;
-					}
-					else if (arenaName.equals("Lagoon")) {
-						xPathValue = 4;
-					}
-					else if (arenaName.equals("Treasure Island")) {
-						xPathValue = 5;
-					}
-					else if (arenaName.equals("Hidden Cove")) {
-						xPathValue = 6;
-					}
-					else if (arenaName.equals("Harpoon Harry's")) {
-						xPathValue = 7;
-					}
+			Date currentDate = new Date();
+			String dateStop = "05/07/1999 01:00:00";
 
-					driver.findElement(By.xpath("//*[@id=\"content\"]/table/tbody/tr/td[2]/center[4]/form/table[1]/tbody/tr[" + xPathValue + "]/td[1]/input")).click();
+			SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+			String currentDateFormattedString = format.format(currentDate);
+			Date d1 = null;
 
-					List<WebElement> allOptions = new Select(driver.findElement(By.name("winner" + (xPathValue - 2)))).getOptions();
-					for (int pirateChoices = 0; pirateChoices < allOptions.size(); pirateChoices++) {
-						String option = allOptions.get(pirateChoices).getText();
-						logMessage("Here's the pirate option: ~" + option.toLowerCase() + "~");
-						logMessage("Here's our pirate answer: ~" + winningPirate.toLowerCase().trim() + "~");
-						if (option.toLowerCase().contains(winningPirate.toLowerCase().trim())) {
-							logMessage("About to select our pirate");
-							new Select(driver.findElement(By.name("winner" + (xPathValue - 2)))).selectByVisibleText(option);
-							logMessage("Select our pirate");
-							break;
+			Date d2 = null;
+
+			try {
+				d1 = format.parse(currentDateFormattedString);
+				d2 = format.parse(dateStop);
+			}
+			catch (Exception ex) {
+				//This error will never happen. Java syntax requires catching it.
+			}
+			//in milliseconds
+			long diff = d2.getTime() - d1.getTime();
+
+			long diffDays = diff / (24 * 60 * 60 * 1000);
+
+			//diffDays *= -1; Use this or the one below (not sure which is more efficient)
+			diffDays = -diffDays;
+			logMessage(diffDays + " days");
+
+			String daysSince1999May07 = String.valueOf(diffDays);
+
+			if (currentRound.equals(daysSince1999May07)) {
+				for (int x = 3; isElementPresentXP("/html/body/center[3]/center[1]/center[1]/table/tbody/tr[" + x + "]/td[3]", driver); x++) {
+					String betInfo = driver.findElement(By.xpath("/html/body/center[3]/center[1]/center[1]/table/tbody/tr[" + x + "]/td[2]")).getText().trim();
+					betInfoList.add(betInfo);
+				}
+
+				driver.get("http://www.neopets.com/pirates/foodclub.phtml?type=bet");
+				String betAmount = driver.findElement(By.xpath("//*[@id=\"content\"]/table/tbody/tr/td[2]/p[4]/b")).getText();
+				for (int x = 0; x < betInfoList.size(); x++) {
+					logMessage("BET " + x + " FOUND");
+					String[] betInfoArr = betInfoList.get(x).split("\n");
+					for (int n = 0; n < betInfoArr.length; n++) {
+						String bet = betInfoArr[n].trim();
+						String arenaName = bet.substring(0, bet.indexOf(":"));
+						logMessage("arenaName: " + arenaName);
+						String winningPirate = bet.substring(bet.indexOf(":") + 1, bet.length());
+						int xPathValue = 0;
+						if (arenaName.equals("Shipwreck")) {
+							xPathValue = 3;
 						}
+						else if (arenaName.equals("Lagoon")) {
+							xPathValue = 4;
+						}
+						else if (arenaName.equals("Treasure Island")) {
+							xPathValue = 5;
+						}
+						else if (arenaName.equals("Hidden Cove")) {
+							xPathValue = 6;
+						}
+						else if (arenaName.equals("Harpoon Harry's")) {
+							xPathValue = 7;
+						}
+
+						driver.findElement(By.xpath("//*[@id=\"content\"]/table/tbody/tr/td[2]/center[4]/form/table[1]/tbody/tr[" + xPathValue + "]/td[1]/input")).click();
+
+						List<WebElement> allOptions = new Select(driver.findElement(By.name("winner" + (xPathValue - 2)))).getOptions();
+						for (int pirateChoices = 0; pirateChoices < allOptions.size(); pirateChoices++) {
+							String option = allOptions.get(pirateChoices).getText();
+							logMessage("Here's the pirate option: ~" + option.toLowerCase() + "~");
+							logMessage("Here's our pirate answer: ~" + winningPirate.toLowerCase().trim() + "~");
+							if (option.toLowerCase().contains(winningPirate.toLowerCase().trim())) {
+								logMessage("About to select our pirate");
+								new Select(driver.findElement(By.name("winner" + (xPathValue - 2)))).selectByVisibleText(option);
+								logMessage("Select our pirate");
+								break;
+							}
+						}
+						logMessage("done putting together bet");
+
 					}
-					logMessage("done putting together bet");
+					driver.findElement(By.name("bet_amount")).clear();
+					driver.findElement(By.name("bet_amount")).sendKeys(betAmount);
+
+					driver.findElement(By.xpath("//input[@value='Place this bet!']")).click();
+					driver.get("http://www.neopets.com/pirates/foodclub.phtml?type=bet");
 
 				}
-				driver.findElement(By.name("bet_amount")).clear();
-				driver.findElement(By.name("bet_amount")).sendKeys(betAmount);
 
-				driver.findElement(By.xpath("//input[@value='Place this bet!']")).click();
-				driver.get("http://www.neopets.com/pirates/foodclub.phtml?type=bet");
-
+				logMessage("Successfully ending 1 runFoodClub");
+				return true;
 			}
 
-			logMessage("Successfully ending 1 runFoodClub");
-			return true;
+			if (isElementPresentXP("/html/body/center[3]/p[1]/font", driver)) {
+				logMessage("Successfully ending 2 runFoodClub");
+				return true;
+			}
 		}
-
-		if (isElementPresentXP("/html/body/center[3]/p[1]/font", driver)) {
-			logMessage("Successfully ending 2 runFoodClub");
-			return true;
-		}
-
-		logMessage("Failed ending runFoodClub");
-		return false;
+		logMessage("Failed ending runFoodClub, but we have to return true");
+		return true;
 
 	}
 
@@ -2892,7 +2980,8 @@ public class NeoDailies {
 	 * @see NeoDailies#oncePerDay(WebDriver, String, String) oncePerDay
 	 * @throws IOException Occurs if BirthdayList.csv doesn't exist, or if the date format is messed with (this should never occur).
 	 */
-	private static boolean runCupcake(WebDriver driver) throws IOException {
+	private static boolean runCupcake(WebDriver driver) {
+		try {
 		logMessage("Starting runCupcake");
 
 		Calendar cal = Calendar.getInstance();
@@ -2930,24 +3019,30 @@ public class NeoDailies {
 
 		driver.get("http://www.neopets.com/petlookup.phtml?pet=" + adoptedPet);
 
-		/*
+
 		String currentDay = new SimpleDateFormat("E").format(cal.getTime());
 
-		if (currentDay.equals("Sun") || currentDay.equals("Mon") || currentDay.equals("Tue")) {
-			//Pink Cupcake for HP
-			driver.findElement(By.xpath("//*[@id=\"birthdayPrize71521\"]/img")).click();
+		if (isElementPresentXP("//*[@id=\"birthdayPrize71521\"]/img", driver)) {
+
+			if (currentDay.equals("Sun") || currentDay.equals("Mon") || currentDay.equals("Tue")) {
+				//Pink Cupcake for HP
+				driver.findElement(By.xpath("//*[@id=\"birthdayPrize71521\"]/img")).click();
+			}
+			else if (currentDay.equals("Wed") || currentDay.equals("Thu")) {
+				//Yellow Cupcake for STR
+				//driver.findElement(By.xpath("//*[@id=\"birthdayPrize71522\"]/img")).click();
+				//Blue Cupcake for DEF
+				driver.findElement(By.xpath("//*[@id=\"birthdayPrize71523\"]/img")).click();
+			}
+			else if (currentDay.equals("Fri") || currentDay.equals("Sat")) {
+				//Blue Cupcake for DEF
+				driver.findElement(By.xpath("//*[@id=\"birthdayPrize71523\"]/img")).click();
+			}
+			
+			sleepMode(1000);
+			driver.findElement(By.xpath("//*[@id=\"popupBirthdaySelect\"]/div[2]/div")).click();
+		
 		}
-		else if (currentDay.equals("Wed") || currentDay.equals("Thu")) {
-			//Yellow Cupcake for STR
-			driver.findElement(By.xpath("//*[@id=\"birthdayPrize71522\"]/img")).click();
-		}
-		else if (currentDay.equals("Fri") || currentDay.equals("Sat")) {
-			//Blue Cupcake for DEF
-			driver.findElement(By.xpath("//*[@id=\"birthdayPrize71523\"]/img")).click();
-		}
-		 */
-		driver.findElement(By.xpath("//*[@id=\"birthdayPrize71522\"]/img")).click();
-		driver.findElement(By.xpath("//*[@id=\"popupBirthdaySelect\"]/div[2]/div")).click();
 
 		sleepMode(5000);
 
@@ -3010,7 +3105,10 @@ public class NeoDailies {
 				}
 			}
 		}
-
+		}
+		catch (Exception ex) {
+			return true;
+		}
 		logMessage("Successfully ending runCupcake");
 		return true;
 	}
@@ -3115,7 +3213,6 @@ public class NeoDailies {
 	 * @see NeoDailies#runStockSell(WebDriver) runStockSell
 	 * @see NeoDailies#runTrudysSurprise(WebDriver) runTrudysSurprise
 	 * @see NeoDailies#runExpellibox(WebDriver) runExpellibox
-	 * @see NeoDailies#runKikoPop(WebDriver) runKikoPop
 	 * @see NeoDailies#runKitchenQuest(WebDriver) runKitchenQuest
 	 * @see NeoDailies#runEmployment(WebDriver) runEmployment
 	 * @see NeoDailies#runHealingSprings(WebDriver) runHealingSprings
@@ -3159,9 +3256,6 @@ public class NeoDailies {
 			}
 			else if (xmlNode.equals("Expellibox")) {
 				successTask = runExpellibox(driver);
-			}
-			else if (xmlNode.equals("KikoPop")) {
-				successTask = runKikoPop(driver);
 			}
 			else if (xmlNode.equals("KitchenQuest")) {
 				successTask = runKitchenQuest(driver);
@@ -3559,10 +3653,10 @@ public class NeoDailies {
 		else if (neopetLevel >= 11 && neopetLevel <= 20) {
 			trainingCost = AVERAGE_TWO_DUBLOON_COST;
 		}
-		else if (neopetLevel >= 21 && neopetLevel <= 40) {
+		else if (neopetLevel >= 21 && neopetLevel < 40) {
 			trainingCost = AVERAGE_FIVE_DUBLOON_COST;
 		}
-		else if (neopetLevel >= 41 && neopetLevel <= 80) {
+		else if (neopetLevel >= 40 && neopetLevel <= 80) {
 			trainingCost = AVERAGE_CODESTONE_COST * 3;
 		}
 		else if (neopetLevel >= 81 && neopetLevel <= 100) {
@@ -3688,6 +3782,8 @@ public class NeoDailies {
 					doneShopping = true;
 				}
 
+				neededFoods = tempNeededFoods;
+
 			}
 
 			shopURLs.clear();
@@ -3771,14 +3867,10 @@ public class NeoDailies {
 		logMessage("Starting runNeoMail");
 		driver.get("http://www.neopets.com/neomessages.phtml");
 		if (isElementPresentXP("//*[@id=\"content\"]/table/tbody/tr/td[2]/form/table/tbody/tr[3]/td[1]/input", driver)) {
-			if (RUNNING_ON_LAPTOP) {
-				sendEmail("NeoMail Received");
-			}
+			sendEmail("NeoMail Received");
 		}
-		if (isElementPresentXP("//*[@id=\"header\"]/table/tbody/tr[1]/td[2]/a[2]/b", driver)) {
-			if (RUNNING_ON_LAPTOP) {
-				sendEmail("Trade Offer Received");
-			}
+		else if (isElementPresentXP("//*[@id=\"header\"]/table/tbody/tr[1]/td[2]/a[2]/b", driver)) {
+			sendEmail("Trade Offer Received");
 		}
 		logMessage("Successfully ending runNeoMail");
 		return true;
@@ -3942,7 +4034,7 @@ public class NeoDailies {
 			driver.findElement(By.xpath("//input[@value='Complete Course!']")).click();
 			driver.get("http://www.neopets.com/pirates/academy.phtml?type=status");
 		}
-		else {
+		else if (driver.getPageSource().contains("Time till course finishes")){
 			logMessage("Successfully ending 1 runDubloonTraining");
 			return true;
 		}
@@ -3976,7 +4068,7 @@ public class NeoDailies {
 		else if (level >= 21 && level <= 30) {
 			trainingCoin = "Five Dubloon Coin";
 		}
-		else if (level >= 31 && level <= 40) {
+		else if (level >= 31 && level < 40) {
 			trainingCoin = "Five Dubloon Coin";
 		}
 		else {
@@ -4064,7 +4156,7 @@ public class NeoDailies {
 			driver.findElement(By.xpath("//input[@value='Complete Course!']")).click();
 			driver.get("http://www.neopets.com/island/training.phtml?type=status");
 		}
-		else {
+		else if (driver.getPageSource().contains("Time till course finishes")){
 			logMessage("Successfully ending 1 runIslandTraining");
 			return true;
 		}
@@ -4760,11 +4852,14 @@ public class NeoDailies {
 				}
 
 				boolean doneShopping = false;
+				int buyingAttempts = 0;
 				while (!doneShopping) {
 					if (itemShopLinks.size() == 0) {
-						if (RUNNING_ON_LAPTOP) {
-							sendEmail("On a Faerie quest NO ITEM");
-						}
+						sendEmail("On a Faerie quest NO ITEM");
+						return false;
+					}
+					else if (buyingAttempts >= 5) {
+						sendEmail("On a Faerie quest CAN'T BUY ANYTHING");
 						return false;
 					}
 					for (int shopLinkCnt = 0; shopLinkCnt < itemShopLinks.size(); shopLinkCnt++) {
@@ -4790,6 +4885,7 @@ public class NeoDailies {
 							}
 						}
 					}
+					buyingAttempts++;
 				}
 
 				driver.get("http://www.neopets.com/quests.phtml");
@@ -5249,9 +5345,11 @@ public class NeoDailies {
 				sentMail = true; }
 			catch(MessagingException e) {
 				logMessage("MessagingException occurred... retrying in 10 seconds");
+				e.printStackTrace();
 				sleepMode(10000); }
 			catch(Exception ex) {
 				logMessage("Unknown exception occurred. Not sending email");
+				ex.printStackTrace();
 				sentMail = true; }
 		}
 	}
