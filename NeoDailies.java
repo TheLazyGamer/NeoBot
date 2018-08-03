@@ -1731,28 +1731,43 @@ public class NeoDailies {
 	private static boolean runPotatoCounter(WebDriver driver) {
 		logMessage("Starting runPotatoCounter");
 		driver.get("http://www.neopets.com/medieval/potatocounter.phtml");
-		for (int n = 0; n < 3; n++) {
-			long startTime = System.currentTimeMillis();
-			int taterCounter = 0;
-			for (int x = 1; x < 15; x++) {
-				for (int y = 1; y < 15; y++) {
-					if (isElementPresentXP("//*[@id=\"content\"]/table/tbody/tr/td[2]/table/tbody/tr[" + x + "]/td[" + y + "]/img", driver)) {
-						taterCounter++;
+
+		if (isElementPresentXP("//input[@value='Guess!']", driver)) {
+			for (int n = 0; n < 3; n++) {
+				long startTime = System.currentTimeMillis();
+				int taterCounter = 0;
+				for (int x = 1; x < 15; x++) {
+					for (int y = 1; y < 15; y++) {
+						if (isElementPresentXP("//*[@id=\"content\"]/div[1]/table/tbody/tr/td[2]/table/tbody/tr[" + x + "]/td[" + y + "]/img", driver)) {
+							taterCounter++;
+						}
 					}
 				}
-			}
-			driver.findElement(By.xpath("//*[@id=\"content\"]/table/tbody/tr/td[2]/center[2]/form/input[2]")).sendKeys(String.valueOf(taterCounter));
-			long endTime = System.currentTimeMillis();
-			logMessage("PotatoCounter took " + (endTime - startTime) + " milliseconds for " + taterCounter + " potatoes");
+				driver.findElement(By.xpath("//*[@id=\"content\"]/div[1]/table/tbody/tr/td[2]/center[2]/form/input[2]")).sendKeys(String.valueOf(taterCounter));
+				long endTime = System.currentTimeMillis();
+				logMessage("PotatoCounter took " + (endTime - startTime) + " milliseconds for " + taterCounter + " potatoes");
 
-			driver.findElement(By.xpath("//*[@id=\"content\"]/table/tbody/tr/td[2]/center[2]/form/input[3]")).click();
-			sleepMode(5000);
-			driver.findElement(By.xpath("//*[@id=\"content\"]/table/tbody/tr/td[2]/center[2]/form/input")).click();
-			if (n == 2) {
-				logMessage("Successfully ending runPotatoCounter");
-				return true;
+				driver.findElement(By.xpath("//input[@value='Guess!']")).click();
+				sleepMode(5000);
+				if (isElementPresentXP("//input[@value='Play Again']", driver)) {
+					driver.findElement(By.xpath("//input[@value='Play Again']")).click();
+				}
+				else {
+					logMessage("Successfully ending runPotatoCounter1");
+					return true;
+				}
+
+				if (n == 2) {
+					logMessage("Successfully ending runPotatoCounter2");
+					return true;
+				}
 			}
 		}
+		else if (isElementPresentXP("//input[@value='Back to Meridell']", driver)) {
+			logMessage("Successfully ending runPotatoCounter3");
+			return true;
+		}
+
 		logMessage("Failed ending runPotatoCounter");
 		return false;
 	}
@@ -1838,8 +1853,8 @@ public class NeoDailies {
 					options.get(2).click();
 				}
 				logMessage("About to unbore number: " + x);
-				if (isElementPresentXP("//*[@id=\"content\"]/table/tbody/tr/td[2]/form/div/input[1]", driver)) {
-					driver.findElement(By.xpath("//*[@id=\"content\"]/table/tbody/tr/td[2]/form/div/input[1]")).click();
+				if (isElementPresentXP("//input[@value='Tell the King your joke!']", driver)) {
+					driver.findElement(By.xpath("//input[@value='Tell the King your joke!']")).click();
 				}
 				logMessage("Unbored number: " + x);
 				sleepMode(5000);
@@ -3019,8 +3034,8 @@ public class NeoDailies {
 
 		driver.get("http://www.neopets.com/petlookup.phtml?pet=" + adoptedPet);
 
-
 		String currentDay = new SimpleDateFormat("E").format(cal.getTime());
+		sleepMode(30000);
 
 		if (isElementPresentXP("//*[@id=\"birthdayPrize71521\"]/img", driver)) {
 
@@ -3569,6 +3584,7 @@ public class NeoDailies {
 			logMessage("jobDetails: " + jobDetails);
 			item = jobDetails.substring(jobDetails.indexOf(":") + 2, jobDetails.length());
 			itemAmount = Integer.parseInt(jobDetails.substring(5, 7).trim());
+			item = item.trim();
 
 			jobReceived = true;
 			jobUrl = driver.getCurrentUrl();
@@ -3585,8 +3601,13 @@ public class NeoDailies {
 				driver.get("http://www.neopets.com/quickstock.phtml");
 				int itemCount = 0;
 				for (int qsIndex = 2; isElementPresentXP("//*[@id=\"content\"]/table/tbody/tr/td[2]/form/table/tbody/tr[" + qsIndex + "]", driver); qsIndex++) {
-					String invItem = driver.findElement(By.xpath("//*[@id=\"content\"]/table/tbody/tr/td[2]/form/table/tbody/tr[" + qsIndex + "]")).getText();
-					if (invItem.contains(item)) {
+					String invItem = driver.findElement(By.xpath("//*[@id=\"content\"]/table/tbody/tr/td[2]/form/table/tbody/tr[" + qsIndex + "]")).getText().trim();
+					if (invItem.contains("N/A")) {
+						invItem = invItem.substring(0, invItem.indexOf(" N/A"));
+					}
+					logMessage("invItem: ~" + invItem + "~");
+					logMessage("item: ~" + item + "~");
+					if (invItem.equals(item)) {
 						itemCount++;
 					}
 				}
@@ -3885,10 +3906,10 @@ public class NeoDailies {
 	private static boolean runGuessMarrow(WebDriver driver) {
 		logMessage("Starting runGuessMarrow");
 		driver.get("http://www.neopets.com/medieval/guessmarrow.phtml");
-		if (isElementPresentXP("//*[@id=\"content\"]/table/tbody/tr/td[2]/center[2]/form/input[1]", driver)) {
-			driver.findElement(By.xpath("//*[@id=\"content\"]/table/tbody/tr/td[2]/center[2]/form/input[1]")).clear();
-			driver.findElement(By.xpath("//*[@id=\"content\"]/table/tbody/tr/td[2]/center[2]/form/input[1]")).sendKeys("427");
-			driver.findElement(By.xpath("//*[@id=\"content\"]/table/tbody/tr/td[2]/center[2]/form/input[2]")).click();
+		if (isElementPresentXP("//*[@id=\"content\"]/div[1]/table/tbody/tr/td[2]/center[2]/form/input[1]", driver)) {
+			driver.findElement(By.xpath("//*[@id=\"content\"]/div[1]/table/tbody/tr/td[2]/center[2]/form/input[1]")).clear();
+			driver.findElement(By.xpath("//*[@id=\"content\"]/div[1]/table/tbody/tr/td[2]/center[2]/form/input[1]")).sendKeys("427");
+			driver.findElement(By.xpath("//input[@value='Guess!']")).click();
 			logMessage("Successfully ending runGuessMarrow");
 			return true;
 		}
