@@ -78,7 +78,7 @@ public class NeoDailies {
 	public static final String PETNAME = "CHANGE_ME"; //Change this to your main pet's name on your neopets account
 	public static final String PET_ZAPPED = "CHANGE_ME"; //Change this to your lab rat's name
 	public static final String WISHING_WELL_ITEM = "Turned Tooth"; //Shouldn't need to be changed. This is the item you wish for.
-	public static final String BD_OPPONENT = "Koi Warrior"; //Change this as needed to the opponent you fight.
+	public static final String BD_OPPONENT = "Giant Spectral Mutant Walein"; //Change this as needed to the opponent you fight.
 	public static final boolean RUNNING_ON_LAPTOP = true; //Shouldn't need to be changed. This is for my (TheLazyGamer) own convenience to run it on my Pi.
 	public static final int GRAVE_PETPET = 1; //Change this as needed. This is the index of the petpet. 1 would be your first pet's petpet.
 	public static final int MINIMUM_KEEP_VALUE = 100; //Change this as needed. This is the minimum NP value where items in your inventory won't be donated.
@@ -1739,12 +1739,12 @@ public class NeoDailies {
 				int taterCounter = 0;
 				for (int x = 1; x < 15; x++) {
 					for (int y = 1; y < 15; y++) {
-						if (isElementPresentXP("//*[@id=\"content\"]/div[1]/table/tbody/tr/td[2]/table/tbody/tr[" + x + "]/td[" + y + "]/img", driver)) {
+						if (isElementPresentXP("//*[@id=\"content\"]/table/tbody/tr/td[2]/table/tbody/tr[" + x + "]/td[" + y + "]/img", driver)) {
 							taterCounter++;
 						}
 					}
 				}
-				driver.findElement(By.xpath("//*[@id=\"content\"]/div[1]/table/tbody/tr/td[2]/center[2]/form/input[2]")).sendKeys(String.valueOf(taterCounter));
+				driver.findElement(By.name("guess")).sendKeys(String.valueOf(taterCounter));
 				long endTime = System.currentTimeMillis();
 				logMessage("PotatoCounter took " + (endTime - startTime) + " milliseconds for " + taterCounter + " potatoes");
 
@@ -2644,6 +2644,7 @@ public class NeoDailies {
 		logMessage("Starting runMeteor");
 		driver.get("http://www.neopets.com/moon/meteor.phtml");
 		if (isElementPresentXP("//input[@value='Take a chance']", driver)) {
+			driver.findElement(By.xpath("//input[@value='Take a chance']")).click();
 			new Select(driver.findElement(By.name("pickstep"))).selectByVisibleText("Poke the meteor with a stick.");
 			driver.findElement(By.name("meteorsubmit")).click();
 			sleepMode(5000); //Might need extra sleep
@@ -3144,7 +3145,7 @@ public class NeoDailies {
 					isElementPresentXP("//*[@id=\"content\"]/table/tbody/tr/td[2]/form/table/tbody/tr[" + x + "]/td[4]/input", driver) &&
 					!isElementPresentXP("//*[@id=\"content\"]/table/tbody/tr/td[2]/form/table/tbody/tr[" + x + "]/td[1]/b", driver)) {
 				String invItem = driver.findElement(By.xpath("//*[@id=\"content\"]/table/tbody/tr/td[2]/form/table/tbody/tr[" + x + "]/td[1]")).getText();
-				if (invItem.length() > 1) {
+				if (invItem.length() > 1 && !invItem.contains("Weak Bottled")) {
 					boolean hasNeocodexPrice = false;
 					boolean hasJellyneoPrice = false;
 					boolean priceBelow100 = false;
@@ -3214,6 +3215,9 @@ public class NeoDailies {
 						}
 					}
 					sleepMode(5000);
+				}
+				else if (invItem.contains("Weak Bottled")) { //Deposit Weak Bottle Faeries
+					driver.findElement(By.xpath("//*[@id=\"content\"]/table/tbody/tr/td[2]/form/table/tbody/tr[" + x + "]/td[3]/input")).click();
 				}
 			}
 			else if (isElementPresentXP("//*[@id=\"content\"]/table/tbody/tr/td[2]/form/table/tbody/tr[" + x + "]/td[1]", driver)) {
