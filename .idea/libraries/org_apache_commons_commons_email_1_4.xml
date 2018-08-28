@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="org.apache.commons:commons-email:1.4" type="repository">
+    <properties maven-id="org.apache.commons:commons-email:1.4" />
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/commons-email-1.4.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

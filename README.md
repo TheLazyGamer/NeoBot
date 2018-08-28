@@ -6,7 +6,7 @@ Over 3 months of:
 * Constant use
 * Improvements
 * Updates
-* Millions of neopoints farmed
+* Millions of Neopoints farmed
 
 Features:
 * Performs all your standard dailies
@@ -19,7 +19,7 @@ Features:
 * Does not edit packets
 
 ### Foreward
-NeoBot was built, tested, and run on an 8 year old netbook with a single core Via Nano 1.3 GHz processor with 3Gb ram Windows 7 64bit. If I can run it on that, you can run it.
+NeoBot was built, tested, and run on an 8 year old netbook with a single core Via Nano 1.3 GHz processor with 3Gb ram Windows 7 64bit. If it can run on that, you can run it.
 
 ### Prerequisites
 * A shop of at least size 6
@@ -31,7 +31,7 @@ NeoBot was built, tested, and run on an 8 year old netbook with a single core Vi
 
 # Setup and Instructions
 
-Create a subfolder in your Documents folder called Neopets
+Create a subfolder in your Documents folder called NeoBot
 
 Download and unzip the package, go into the NeoBot-master folder, and copy and paste all the contents into your Documents folder
 
@@ -40,7 +40,7 @@ Your antivirus may affect sending email. You may need to disable your antivirus,
 ### Installations and Configurations
 | Prereq | Action | Purpose |
 | ------ | ------ | ------ |
-|[AutoIT3](https://www.autoitscript.com/site/autoit/downloads/) | Download | The main engine that drives the bot|
+|[AutoIT3](https://www.autoitscript.com/site/autoit/downloads/) | Download | The dailydoer engine that drives the bot|
 |[Java 8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) | Download | What the Twitter and Email functionality use|
 |[Javac](https://learn.yancyparedes.net/2012/03/setting-up-javac-command-on-windows-7/) | Configure | Add javac to your PATH to compile Java scripts|
 |[Firefox 41](https://ftp.mozilla.org/pub/firefox/releases/41.0.2/win32/en-US/Firefox%20Setup%2041.0.2.exe) | Download (if you already have a newer version of Firefox, download this into a direcotry other than the installer's default) | The browser NeoBot uses.
@@ -48,7 +48,7 @@ Your antivirus may affect sending email. You may need to disable your antivirus,
 ### Update Code Parameters
 
 
-Open up RunDailies.java and update:
+Open up User.java and update:
 ```Java
 public static final String YOUR_EMAIL = "CHANGE_ME@gmail.com";
 public static final String YOUR_EMAIL_PASSWORD = "CHANGE_ME";
@@ -58,16 +58,16 @@ public static final String USERNAME = "CHANGE_ME";
 public static final String PASSWORD = "CHANGE_ME";
 public static final String PETNAME = "CHANGE_ME";
 public static final String PET_ZAPPED = "CHANGE_ME";
+public static final String PET_BATTLEDOME = "CHANGE_ME";
+public static final String ALTADOR_URL = "CHANGE_ME";
 ```
 Change **YOUR_EMAIL** to your gmail address.
 
-Change **YOUR_EMAIL_PASSWORD** to your gmail password.
+Change **YOUR_EMAIL_PASSWORD** to your email password.
 
 Change **NUMBER_TO_TEXT** to your phone number and carrier. Valid carriers are in the table below.
 
-Change **WINDOWS_USER** to your Windows username.
-
-Change **USERNAME** to your Neopets account username.
+Change **USERNAME** to your Neopets account USERNAME].
 
 Change **PASSWORD** to your Neopets account password.
 
@@ -75,7 +75,9 @@ Change **PETNAME** to your active Neopets pet name.
 
 Change **PET_ZAPPED** to your lab rat's name.
 
-Change **WINDOWS_USER** to your windows username.
+Change **PET_BATTLEDOME** to your Battledome pet's name.
+
+Change **ALTADOR_URL** to your Altador Council prize URL address ID. (At the end of the URL.)
 &nbsp;
 &nbsp;
 
@@ -110,17 +112,17 @@ Change **WINDOWS_USER** to your windows username.
 
 Open up SetupWindows.bat and update:
 ```
-AutoIt3.exe C:\Users\TheLazyGamer\Documents\Neopets\SetupWindows.au3
+AutoIt3.exe C:\Users\[USERNAME]\Documents\NeoBot\SetupWindows.au3
 ```
-Change **TheLazyGamer** to your Windows username and save.
+Change **[USERNAME]** to your Windows username and save.
 &nbsp;
 &nbsp;
 
 Open up RunDailies.bat and update:
 ```
-cd C:\Users\TheLazyGamer\Documents\Neopets
+cd C:\Users\[USERNAME]\Documents\NeoBot\src
 ```
-Change **TheLazyGamer** to your Windows username and save.
+Change **[USERNAME]** to your Windows username and save.
 &nbsp;
 &nbsp;
 &nbsp;
@@ -195,19 +197,19 @@ This only needs to be changed if you didn't choose the default installation loca
 
 13. Move the lib folder from Downloads into Neopets
 
-14. Create a file in Neopets called RunDailies
+14. Create a file in NeoBot called RunDailies
 
 15. Paste this into RunDailies:
 	#!/bin/bash
 	Xvfb :1 -screen 5 1920x1080x24 &
 	export DISPLAY=:1.5
 	killall chromedriver
-	cd /home/pi/Documents/Neopets
+	cd /home/pi/Documents/NeoBot
 	javac -cp .:lib/* NeoDailiesPi.java
 	java -cp .:lib/* NeoDailiesPi
 	read -p "Press enter to continue"
 
-16. In a terminal cd to Neopets.
+16. In a terminal cd to NeoBot.
 
 17. run chmod 755 RunDailies (this makes it an executable bash file)
 
@@ -225,7 +227,7 @@ This only needs to be changed if you didn't choose the default installation loca
 
 24. If you haven't chosen an editor, choose nano (should be option 2)
 
-25. At the bottom of your crontab enter: @reboot /home/pi/Documents/Neopets/RunDailies
+25. At the bottom of your crontab enter: @reboot /home/pi/Documents/NeoBot/RunDailies
 
 26. Press Ctrl+X to Exit, press Y to save, and press Enter to close
 
@@ -267,7 +269,7 @@ https://stackoverflow.com/a/15514348
 http://www.yann.com/en/use-xvfb-selenium-and-chrome-to-drive-a-web-browser-in-php-23/08/2012.html
 
 
-# License
+# LicenseF
 
 [All Selenium projects are licensed under the Apache 2.0 License.](http://www.seleniumhq.org/about/license.jsp)
 
@@ -276,6 +278,6 @@ http://www.yann.com/en/use-xvfb-selenium-and-chrome-to-drive-a-web-browser-in-ph
 [JavaMail uses multiple licenses](https://java.net/projects/javamail/pages/License)
 
 The provided NeoBot scripts are released under MIT License.
-Copyright © 2017 TheLazyGamer
+Copyright © 2017 TheLazyGamer, Nichole Hayes
 
-For educational purposes only. I am not responsible for any bans or suspensions to your account. Botting is against Neopet's EULA. Use at your own discretion.
+For educational purposes only. We are not responsible for any bans or suspensions to your account. Botting is against Neopet's EULA. Use at your own discretion.
