@@ -1,3 +1,4 @@
+//TODO add comments
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -193,9 +194,34 @@ public class NeoDailies {
 
 					//oncePerDay(driver, "Lottery", "EEEE");
 
+					//TODO Food club personal algorithm
+					/*
+					 * http://neofoodclub.fr/ Round 6676 is the oldest round
+					 * https://gist.github.com/neothrow/f87b2948ed6496534db2f075f15f2afa
+					 * http://www.neopets.com/~myfoodclubbets
+					 * http://www.neopets.com/~Spiky
+					 * http://www.neopets.com/~jawsnapper0991
+					 * http://www.neopets.com/~BlazeaBruce
+					 * http://www.neopets.com/~windagame
+					 * http://www.neocodex.us/forum/topic/117462-food-club-win-every-time-dutch-book/
+					 * https://www.reddit.com/user/thejayeless/comments/ who is http://www.neopets.com/~Aurasia
+					 * https://www.reddit.com/r/neopets/comments/4xsf9w/food_club_bets_august_15_2016/d6i83jx/
+					 * https://www.reddit.com/r/neopets/comments/4jvgkr/food_club_bets_may_18_2016/d3a0r2v/
+					 * https://www.reddit.com/r/neopets/comments/74tdx3/food_club_faqs_and_resources/?st=j8h2byih&sh=1f0bc757
+					 * https://www.reddit.com/r/neopets/comments/754xrs/guaranteed_fc_wins_with_modest_payout_excel_file/?st=j8ju8fd8&sh=d09dac98
+					 * 
+					 * http://foodclub.daqtools.info/History.php?round=3574
+					 * TER is total expected return, and its payout factored down because everyone has different max bets based on their account's age.
+					 * You want TER to be greater than 10, since every day you max bet ten times. Anyone can use (TER-10)*(Max Bet) to find their own expected profit.
+					 * Usually higher TER is better, but you also want to watch the bust rate.
+					 * Some high risk, high return bets can skew TER higher when you're betting on a 0.5% chance to get 200:10
+					 */
+
 					oncePerDay(driver, "FoodClub", "EEEE");
 
 					oncePerDay(driver, "LabRay", "EEEE");
+
+					//TODO Petpet lab ray
 
 					oncePerDay(driver, "Cupcake", "EEEE");
 
@@ -299,6 +325,8 @@ public class NeoDailies {
 					oncePerInterval(driver, "RepriceItems", (long) 172800);
 
 					oncePerInterval(driver, "StockItems", (long) 1800);
+
+					//TODO add CleanSDB that purges our garbage items
 
 					oncePerDay(driver, "AppleBobbing", "EEEE");
 
@@ -3206,14 +3234,14 @@ public class NeoDailies {
 				else if (invItem.length() > 1 && !invItem.contains("Weak Bottled")) {
 					boolean hasNeoCodexPrice = false;
 					boolean hasJellyNeoPrice = false;
-					boolean priceBelow100 = false;
+					boolean priceBelowMin = false;
 
 					int neoCodexPrice = getNeoCodexPrice(invItem);
 					if (neoCodexPrice != -1) {
 						hasNeoCodexPrice = true;
 
 						if (neoCodexPrice <= MINIMUM_KEEP_VALUE) {
-							priceBelow100 = true;
+							priceBelowMin = true;
 							driver.findElement(By.xpath("//*[@id=\"content\"]/table/tbody/tr/td[2]/form/table/tbody/tr[" + x + "]/td[4]/input")).click();
 						}
 						else {
@@ -3224,7 +3252,7 @@ public class NeoDailies {
 						driver.findElement(By.xpath("//*[@id=\"content\"]/table/tbody/tr/td[2]/form/table/tbody/tr[" + x + "]/td[3]/input")).click();
 					}
 
-					if (!priceBelow100) {
+					if (!priceBelowMin) {
 						int jellyNeoPrice = getJellyNeoPrice(invItem);
 						if (jellyNeoPrice > -1) {
 							hasJellyNeoPrice = true;
