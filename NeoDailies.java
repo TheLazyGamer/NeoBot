@@ -3997,6 +3997,7 @@ public class NeoDailies {
 			}
 		}
 
+		//TODO use http://www.neopets.com/allevents.phtml for this? Or maybe for neomail AND this?
 		if (isElementPresentXP("//*[@id=\"header\"]/table/tbody/tr[1]/td[2]", driver)) {
 			String eventMessage = driver.findElement(By.xpath("//*[@id=\"header\"]/table/tbody/tr[1]/td[2]")).getText().trim();
 			if (!eventMessage.contains("Trudy") && !eventMessage.contains("Neomail") && !storedMessagesList.contains(eventMessage) && eventMessage.length() > 3) {
