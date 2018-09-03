@@ -6,7 +6,7 @@ Over 3 months of:
 * Constant use
 * Improvements
 * Updates
-* Millions of neopoints farmed
+* Millions of Neopoints farmed
 
 Features:
 * Performs all your standard dailies
@@ -19,7 +19,7 @@ Features:
 * Does not edit packets
 
 ### Foreward
-NeoBot was built, tested, and run on an 8 year old netbook with a single core Via Nano 1.3 GHz processor with 3Gb ram Windows 7 64bit. If I can run it on that, you can run it.
+NeoBot was built, tested, and run on an 8 year old netbook with a single core Via Nano 1.3 GHz processor with 3Gb ram Windows 7 64bit. If it can run on that, you can run it.
 
 ### Prerequisites
 * A shop of at least size 6
@@ -58,6 +58,7 @@ public static final String USERNAME = "CHANGE_ME";
 public static final String PASSWORD = "CHANGE_ME";
 public static final String PETNAME = "CHANGE_ME";
 public static final String PET_ZAPPED = "CHANGE_ME";
+public static final String ALTADOR_URL = "CHANGE_ME";
 ```
 Change **YOUR_EMAIL** to your gmail address.
 
@@ -75,7 +76,7 @@ Change **PETNAME** to your active Neopets pet name.
 
 Change **PET_ZAPPED** to your lab rat's name.
 
-Change **WINDOWS_USER** to your windows username.
+Change **ALTADOR_URL** to your Altador Council prize URL address ID (at the end of the URL).
 &nbsp;
 &nbsp;
 
@@ -191,6 +192,10 @@ This only needs to be changed if you didn't choose the default installation loca
 
 11. Move client-combined-3.4.0-nodeps into the lib folder inside Downloads which was generated from the previous step
 
+12. Download javax mail from https://github.com/javaee/javamail/releases/download/JAVAMAIL-1_6_0/javax.mail.jar and move the jar into your lib folder inside Downloads
+
+13. Download Apache Commons Email from http://central.maven.org/maven2/org/apache/commons/commons-email/1.5/commons-email-1.5.jar and move the jar into your lib folder inside Downloads
+
 12. Create a folder called Neopets inside Documents
 
 13. Move the lib folder from Downloads into Neopets
@@ -213,7 +218,32 @@ This only needs to be changed if you didn't choose the default installation loca
 
 18. run sudo apt-get install xvfb
 
-19. You need to do a daily reboot. In a terminal run: sudo crontab -e
+19. In a terminal run: sudo raspi-config
+
+20. Select Localisation Options. Then select Change Locale
+
+21. Select en_US.UTF-8 UTF-8. Then select en_GB.UTF-8
+
+22. Select Localisation Options. Then select Change Keyboard Layout
+
+23. Choose your keyboard, or select one of the generics that best apply (not intl if you're in the US)
+
+24. Choose English (UK)
+
+25. Select the appropriate AltGr configuration (usually no AltGr key).
+
+26. Select No compose key
+
+27. Select No for Ctrl_Alt_Backspace
+
+28. run sudo nano /etc/default/keyboard
+
+29. Change XKBLAYOUT="gb" to "us"
+
+30. Reboot
+
+(19-22 Optional)
+19. You may need to do a daily reboot. In a terminal run: sudo crontab -e
 
 20. If you haven't chosen an editor, choose nano (should be option 2)
 
@@ -221,7 +251,7 @@ This only needs to be changed if you didn't choose the default installation loca
 
 22. Press Ctrl+X to Exit, press Y to save, and press Enter to close
 
-23. We need to start the program upon reboot. In a terminal run: crontab -e
+23. We need to start the program upon reboot. In a terminal run: sudo crontab -e
 
 24. If you haven't chosen an editor, choose nano (should be option 2)
 
@@ -231,9 +261,11 @@ This only needs to be changed if you didn't choose the default installation loca
 
 27. Install teamviewer by choosing Raspbian ARM download here https://www.teamviewer.com/en/download/linux
 
-28. Open a terminal and run sudo dpkg -i /path/to/deb/file
+28. Open a terminal and run sudo dpkg -i /path/to/deb/file (it should error, hence the next steps)
 
 29. Run sudo apt-get install -f
+
+30. Run sudo apt--fix-broken install
 
 30. Open teamviewer GUI and click the gear icon
 
@@ -241,13 +273,13 @@ This only needs to be changed if you didn't choose the default installation loca
 
 32. Open a terminal and run sudo nano /boot/config.txt
 
-33. Uncomment #framebuffer_width=1024 and #framebuffer_height=720
+33. Uncomment #framebuffer_width=1280 and #framebuffer_height=720
 
 34. Press Ctrl+X to Exit, press Y to save, and press Enter to close
 
 35. Open Chromium and login to Neopets. Navigate to Qasalan Expellibox and enable Flash.
 
-NOTE: The code provided handles this, but your Chromium profile filepath is as follows: user-data-dir=/home/pi/.config/chromium (/Default with be auto-appended)
+NOTE: The code provided handles this, but your Chromium profile filepath is as follows: user-data-dir=/home/pi/.config/chromium (/Default will be auto-appended)
 
 Resources used:
 https://raspberrypi.stackexchange.com/a/67631
