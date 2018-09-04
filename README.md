@@ -2,7 +2,7 @@
 A less-detectable, easy-to-use Neopets bot.  Play while you sleep, while at school, while at work, anywhere.
 
 
-Over 3 months of:
+Over 12 months of:
 * Constant use
 * Improvements
 * Updates
