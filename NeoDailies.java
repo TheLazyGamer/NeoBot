@@ -193,30 +193,28 @@ public class NeoDailies {
 					//oncePerDay(driver, "Coincidence", "EEEE");
 
 					//oncePerDay(driver, "Lottery", "EEEE");
+/*
+Food club personal algorithm
+http://neofoodclub.fr/ Round 6676 is the oldest round
+https://gist.github.com/neothrow/f87b2948ed6496534db2f075f15f2afa
+http://www.neopets.com/~myfoodclubbets
+http://www.neopets.com/~Spiky
+http://www.neopets.com/~jawsnapper0991
+http://www.neopets.com/~BlazeaBruce
+http://www.neopets.com/~windagame
+http://www.neocodex.us/forum/topic/117462-food-club-win-every-time-dutch-book/
+https://www.reddit.com/user/thejayeless/comments/ who is http://www.neopets.com/~Aurasia
+https://www.reddit.com/r/neopets/comments/4xsf9w/food_club_bets_august_15_2016/d6i83jx/
+https://www.reddit.com/r/neopets/comments/4jvgkr/food_club_bets_may_18_2016/d3a0r2v/
+https://www.reddit.com/r/neopets/comments/74tdx3/food_club_faqs_and_resources/?st=j8h2byih&sh=1f0bc757
+https://www.reddit.com/r/neopets/comments/754xrs/guaranteed_fc_wins_with_modest_payout_excel_file/?st=j8ju8fd8&sh=d09dac98
 
-					//TODO Food club personal algorithm
-					/*
-					 * http://neofoodclub.fr/ Round 6676 is the oldest round
-					 * https://gist.github.com/neothrow/f87b2948ed6496534db2f075f15f2afa
-					 * http://www.neopets.com/~myfoodclubbets
-					 * http://www.neopets.com/~Spiky
-					 * http://www.neopets.com/~jawsnapper0991
-					 * http://www.neopets.com/~BlazeaBruce
-					 * http://www.neopets.com/~windagame
-					 * http://www.neocodex.us/forum/topic/117462-food-club-win-every-time-dutch-book/
-					 * https://www.reddit.com/user/thejayeless/comments/ who is http://www.neopets.com/~Aurasia
-					 * https://www.reddit.com/r/neopets/comments/4xsf9w/food_club_bets_august_15_2016/d6i83jx/
-					 * https://www.reddit.com/r/neopets/comments/4jvgkr/food_club_bets_may_18_2016/d3a0r2v/
-					 * https://www.reddit.com/r/neopets/comments/74tdx3/food_club_faqs_and_resources/?st=j8h2byih&sh=1f0bc757
-					 * https://www.reddit.com/r/neopets/comments/754xrs/guaranteed_fc_wins_with_modest_payout_excel_file/?st=j8ju8fd8&sh=d09dac98
-					 * 
-					 * http://foodclub.daqtools.info/History.php?round=3574
-					 * TER is total expected return, and its payout factored down because everyone has different max bets based on their account's age.
-					 * You want TER to be greater than 10, since every day you max bet ten times. Anyone can use (TER-10)*(Max Bet) to find their own expected profit.
-					 * Usually higher TER is better, but you also want to watch the bust rate.
-					 * Some high risk, high return bets can skew TER higher when you're betting on a 0.5% chance to get 200:10
-					 */
-
+http://foodclub.daqtools.info/History.php?round=3574
+TER is total expected return, and its payout factored down because everyone has different max bets based on their account's age.
+You want TER to be greater than 10, since every day you max bet ten times. Anyone can use (TER-10)*(Max Bet) to find their own expected profit.
+Usually higher TER is better, but you also want to watch the bust rate.
+Some high risk, high return bets can skew TER higher when you're betting on a 0.5% chance to get 200:10
+*/
 					oncePerDay(driver, "FoodClub", "EEEE");
 
 					oncePerDay(driver, "LabRay", "EEEE");
@@ -3983,7 +3981,7 @@ public class NeoDailies {
 
 		boolean newMessage = false;
 		String messageString = "";
-
+//TODO ignore read messages, only check unread
 		driver.get("http://www.neopets.com/neomessages.phtml");
 
 		if (isElementPresentXP("//*[@id=\"content\"]/table/tbody/tr/td[2]/form/table/tbody/tr[2]/td[4]/a", driver)) {
@@ -4025,7 +4023,7 @@ public class NeoDailies {
 		driver.get("http://www.neopets.com/medieval/guessmarrow.phtml");
 		if (isElementPresentXP("//input[@value='Guess!']", driver)) {
 			driver.findElement(By.name("guess")).clear();
-			driver.findElement(By.xpath("guess")).sendKeys("427");
+			driver.findElement(By.name("guess")).sendKeys("427");
 			driver.findElement(By.xpath("//input[@value='Guess!']")).click();
 			logMessage("Successfully ending runGuessMarrow 1");
 			return true;
