@@ -2700,7 +2700,7 @@ public class NeoDailies {
 		if (isElementPresentXP("//input[@value='Open the stone door to the Deserted Tomb...']", driver)) {
 			driver.findElement(By.xpath("//input[@value='Open the stone door to the Deserted Tomb...']")).click();
 			if (isElementPresentXP("//input[@value=\"Continue on, at the risk of never returning.  There's no turning back.\"]", driver)) {
-				driver.findElement(By.xpath("//input[@value=\"Continue on, at the risk of never returning.	There's no turning back.\"]")).click();
+				driver.findElement(By.xpath("//input[@value=\"Continue on, at the risk of never returning.  There's no turning back.\"]")).click();
 				logMessage("Successfully ending runGeraptikuTomb");
 				return true;
 			}
