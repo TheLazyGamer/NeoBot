@@ -86,9 +86,15 @@
 	<KikoPop>
 		<LastRun>1</LastRun>
 	</KikoPop>
+	<CoconutShy>
+		<LastRun>1</LastRun>
+	</CoconutShy>
 	<LabRay>
 		<LastRun>1</LastRun>
 	</LabRay>
+	<PetpetLabRay>
+		<LastRun>1</LastRun>
+	</PetpetLabRay>
 	<Stocks>
 		<LastRun>1</LastRun>
 	</Stocks>
@@ -155,6 +161,15 @@
 	<Fishing>
 		<LastRun>1</LastRun>
 	</Fishing>
+	<WheelExcitement>
+		<LastRun>1</LastRun>
+	</WheelExcitement>
+	<WheelMediocrity>
+		<LastRun>1</LastRun>
+	</WheelMediocrity>
+	<WheelMisfortune>
+		<LastRun>1</LastRun>
+	</WheelMisfortune>
 	<GraveDanger>
 		<LastRun>1</LastRun>
 	</GraveDanger>
