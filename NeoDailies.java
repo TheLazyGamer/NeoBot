@@ -2460,7 +2460,7 @@ public class NeoDailies {
 			}
 
 			String hintedSentence = driver.findElement(By.xpath("//*[@id='content']/table/tbody/tr/td[2]/table/tbody/tr[2]/td")).getText().trim();
-			hintedSentence = hintedSentence.replace("	", "~");
+			hintedSentence = hintedSentence.replace("   ", "~");
 			hintedSentence = hintedSentence.replace(" ", "");
 			hintedSentence = hintedSentence.replace("~", " ");
 			hintedSentence = hintedSentence.replace("\n", " ");
@@ -2513,7 +2513,7 @@ public class NeoDailies {
 				sleepMode(5000);
 
 				hintedSentence = driver.findElement(By.xpath("//*[@id='content']/table/tbody/tr/td[2]/table/tbody/tr[2]/td")).getText().trim();
-				hintedSentence = hintedSentence.replace("	", "~");
+				hintedSentence = hintedSentence.replace("   ", "~");
 				hintedSentence = hintedSentence.replace(" ", "");
 				hintedSentence = hintedSentence.replace("~", " ");
 				hintedSentence = hintedSentence.replace("\n", " ");
@@ -3699,7 +3699,7 @@ public class NeoDailies {
 
 		for (; isElementPresentXP("//*[@id=\"content\"]/table/tbody/tr/td[2]/center[2]/table/tbody/tr[" + x + "]/td/b[1]", driver); x+=3) {
 			String jobDesc = driver.findElement(By.xpath("//*[@id=\"content\"]/table/tbody/tr/td[2]/center[2]/table/tbody/tr[" + x + "]/td")).getText().trim();
-			jobDesc = jobDesc.replace("\n\n", "<br>").replace("	  ", "<br>");
+			jobDesc = jobDesc.replace("\n\n", "<br>").replace("   ", "<br>");
 			String[] jobDescSplit = jobDesc.split(" ");
 			int itemAmount = Integer.parseInt(jobDescSplit[1]);
 			int reward = Integer.parseInt(jobDescSplit[jobDescSplit.length - 2].replace(",", ""));
@@ -3729,7 +3729,7 @@ public class NeoDailies {
 
 		logMessage("Winning job found");
 		String jobDesc = driver.findElement(By.xpath("//*[@id=\"content\"]/table/tbody/tr/td[2]/center[2]/table/tbody/tr[" + bestItemXpathIndex + "]/td")).getText().trim();
-		jobDesc = jobDesc.replace("\n\n", "<br>").replace("	  ", "<br>");
+		jobDesc = jobDesc.replace("\n\n", "<br>").replace("   ", "<br>");
 		String[] jobDescSplit = jobDesc.split(" ");
 		int itemAmount = Integer.parseInt(jobDescSplit[1]);
 		String item = jobDesc.substring(jobDesc.indexOf(":") + 1, jobDesc.indexOf("<")).trim();
