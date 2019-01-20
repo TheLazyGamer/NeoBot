@@ -79,6 +79,7 @@ public class NeoDailies {
 	public static final String PASSWORD = "CHANGE_ME"; //Change this to your neopets account password
 	public static final String PETNAME = "CHANGE_ME"; //Change this to your main pet's name on your neopets account
 	public static final String PET_ZAPPED = "CHANGE_ME"; //Change this to your lab rat's name
+    public static final String PETPET_ZAPPED_OWNER = "CHANGE_ME"; //Change this to the name of the pet who owns your lab rat petpet. (Caution! Conflicts with Grave Danger!)
 	public static final String ALTADOR_URL = "CHANGE_ME"; //Change this to your Altador Council prize URL address ID (at the end of the URL).
 	public static final String WISHING_WELL_ITEM = "Turned Tooth"; //Shouldn't need to be changed. This is the item you wish for.
 	public static final String BD_OPPONENT = "Giant Spectral Mutant Walein"; //Change this as needed to the opponent you fight.
@@ -86,6 +87,7 @@ public class NeoDailies {
 	public static final int GRAVE_PETPET = 1; //Change this as needed. This is the index of the petpet. 1 would be your first pet's petpet.
 	public static final int MINIMUM_KEEP_VALUE = 100; //Change this as needed. This is the minimum NP value where items in your inventory won't be donated.
 	public static final int MINIMUM_CASH_ON_HAND = 100000; //Shouldn't need to be changed. This is the minimum NP we have on hand to start the day.
+    public static final int MINIMUM_STOCK_SELL_PRICE = 60; //Change this to the minimum price you want your stocks to be sold at.
 
 	//These shouldn't need changing, but the costs may need occasional updating. Only used for kitchen quest.
 	public static final int AVERAGE_ONE_DUBLOON_COST = 700;
@@ -193,33 +195,34 @@ public class NeoDailies {
 					//oncePerDay(driver, "Coincidence", "EEEE");
 
 					//oncePerDay(driver, "Lottery", "EEEE");
-/*
-Food club personal algorithm
-http://neofoodclub.fr/ Round 6676 is the oldest round
-https://gist.github.com/neothrow/f87b2948ed6496534db2f075f15f2afa
-http://www.neopets.com/~myfoodclubbets
-http://www.neopets.com/~Spiky
-http://www.neopets.com/~jawsnapper0991
-http://www.neopets.com/~BlazeaBruce
-http://www.neopets.com/~windagame
-http://www.neocodex.us/forum/topic/117462-food-club-win-every-time-dutch-book/
-https://www.reddit.com/user/thejayeless/comments/ who is http://www.neopets.com/~Aurasia
-https://www.reddit.com/r/neopets/comments/4xsf9w/food_club_bets_august_15_2016/d6i83jx/
-https://www.reddit.com/r/neopets/comments/4jvgkr/food_club_bets_may_18_2016/d3a0r2v/
-https://www.reddit.com/r/neopets/comments/74tdx3/food_club_faqs_and_resources/?st=j8h2byih&sh=1f0bc757
-https://www.reddit.com/r/neopets/comments/754xrs/guaranteed_fc_wins_with_modest_payout_excel_file/?st=j8ju8fd8&sh=d09dac98
 
-http://foodclub.daqtools.info/History.php?round=3574
-TER is total expected return, and its payout factored down because everyone has different max bets based on their account's age.
-You want TER to be greater than 10, since every day you max bet ten times. Anyone can use (TER-10)*(Max Bet) to find their own expected profit.
-Usually higher TER is better, but you also want to watch the bust rate.
-Some high risk, high return bets can skew TER higher when you're betting on a 0.5% chance to get 200:10
-*/
+					/*
+					Food club personal algorithm
+					http://neofoodclub.fr/ Round 6676 is the oldest round
+					https://gist.github.com/neothrow/f87b2948ed6496534db2f075f15f2afa
+					http://www.neopets.com/~myfoodclubbets
+					http://www.neopets.com/~Spiky
+					http://www.neopets.com/~jawsnapper0991
+					http://www.neopets.com/~BlazeaBruce
+					http://www.neopets.com/~windagame
+					http://www.neocodex.us/forum/topic/117462-food-club-win-every-time-dutch-book/
+					https://www.reddit.com/user/thejayeless/comments/ who is http://www.neopets.com/~Aurasia
+					https://www.reddit.com/r/neopets/comments/4xsf9w/food_club_bets_august_15_2016/d6i83jx/
+					https://www.reddit.com/r/neopets/comments/4jvgkr/food_club_bets_may_18_2016/d3a0r2v/
+					https://www.reddit.com/r/neopets/comments/74tdx3/food_club_faqs_and_resources/?st=j8h2byih&sh=1f0bc757
+					https://www.reddit.com/r/neopets/comments/754xrs/guaranteed_fc_wins_with_modest_payout_excel_file/?st=j8ju8fd8&sh=d09dac98
+
+					http://foodclub.daqtools.info/History.php?round=3574
+					TER is total expected return, and its payout factored down because everyone has different max bets based on their account's age.
+					You want TER to be greater than 10, since every day you max bet ten times. Anyone can use (TER-10)*(Max Bet) to find their own expected profit.
+					Usually higher TER is better, but you also want to watch the bust rate.
+					Some high risk, high return bets can skew TER higher when you're betting on a 0.5% chance to get 200:10
+					*/
 					oncePerDay(driver, "FoodClub", "EEEE");
 
 					oncePerDay(driver, "LabRay", "EEEE");
 
-					//TODO Petpet lab ray
+					//oncePerDay(driver, "PetpetLabRay", "EEEE");
 
 					oncePerDay(driver, "Cupcake", "EEEE");
 
@@ -283,6 +286,8 @@ Some high risk, high return bets can skew TER higher when you're betting on a 0.
 
 					oncePerDay(driver, "KikoPop", "EEEE");
 
+					//oncePerDay(driver, "CoconutShy", "EEEE");
+
 					oncePerDay(driver, "MonthlyFreeby", "MMM");
 
 					oncePerInterval(driver, "NeoMail", (long) 3600);
@@ -327,6 +332,12 @@ Some high risk, high return bets can skew TER higher when you're betting on a 0.
 					//TODO add CleanSDB that purges our garbage items
 
 					oncePerDay(driver, "AppleBobbing", "EEEE");
+
+					//oncePerInterval(driver, "WheelExcitement", (long) 7200);
+
+					//oncePerInterval(driver, "WheelMediocrity", (long) 2400);
+
+					//oncePerInterval(driver, "WheelMisfortune", (long) 7200);
 
 					oncePerInterval(driver, "HealingSprings", (long) 1800);
 
@@ -393,6 +404,7 @@ Some high risk, high return bets can skew TER higher when you're betting on a 0.
 	 * @see NeoDailies#runNeggCave(WebDriver) runNeggCave
 	 * @see NeoDailies#runShopOfOffers(WebDriver) runShopOfOffers
 	 * @see NeoDailies#runAppleBobbing(WebDriver) runAppleBobbing
+	 * @see NeoDailies#runCoconutShy(WebDriver) runCoconutShy
 	 * @see NeoDailies#runAnchorManagement(WebDriver) runAnchorManagement
 	 * @see NeoDailies#runFruitMachine(WebDriver) runFruitMachine
 	 * @see NeoDailies#runTDMBGPOP(WebDriver) runTDMBGPOP
@@ -412,6 +424,7 @@ Some high risk, high return bets can skew TER higher when you're betting on a 0.
 	 * @see NeoDailies#runMoodImprove(WebDriver) runMoodImprove
 	 * @see NeoDailies#runFaeries(WebDriver) runFaeries
 	 * @see NeoDailies#runLabRay(WebDriver) runLabRay
+     * @see NeoDailies#runPetpetLabRay(WebDriver) runPetpetLabRay
 	 * @see NeoDailies#runStocks(WebDriver) runStocks
 	 * @see NeoDailies#runCoincidence(WebDriver) runCoincidence
 	 * @see NeoDailies#runLottery(WebDriver) runLottery
@@ -480,6 +493,9 @@ Some high risk, high return bets can skew TER higher when you're betting on a 0.
 			else if (xmlNode.equals("AppleBobbing")) {
 				successTask = runAppleBobbing(driver);
 			}
+			else if (xmlNode.equals("CoconutShy")) {
+				successTask = runCoconutShy(driver);
+			}
 			else if (xmlNode.equals("AnchorManagement")) {
 				successTask = runAnchorManagement(driver);
 			}
@@ -540,6 +556,9 @@ Some high risk, high return bets can skew TER higher when you're betting on a 0.
 			else if (xmlNode.equals("LabRay")) {
 				successTask = runLabRay(driver);
 			}
+            else if (xmlNode.equals("PetpetLabRay")) {
+				successTask = runPetpetLabRay(driver);
+			}
 			else if (xmlNode.equals("Stocks")) {
 				successTask = runStocks(driver);
 			}
@@ -582,11 +601,12 @@ Some high risk, high return bets can skew TER higher when you're betting on a 0.
 	private static boolean runTombola(WebDriver driver) {
 		logMessage("Starting runTombola");
 		driver.get("http://www.neopets.com/island/tombola.phtml");
-		if (isElementPresentXP("//form[@action='tombola2.phtml']/input[@type='submit']", driver)) {
-			driver.findElement(By.xpath("//form[@action='tombola2.phtml']/input[@type='submit']")).click();
+		if (isElementPresentXP("//input[@value='Play Tombola!']", driver)) {
+			driver.findElement(By.xpath("//input[@value='Play Tombola!']")).click();
+			logMessage("Successfully ending runTombola");
 			return true;
 		}
-		logMessage("Successfully ending runTombola");
+		logMessage("Failed ending runTombola");
 		return false;
 	}
 
@@ -599,8 +619,8 @@ Some high risk, high return bets can skew TER higher when you're betting on a 0.
 	private static boolean runOmelette(WebDriver driver) {
 		logMessage("Starting runOmelette");
 		driver.get("http://www.neopets.com/prehistoric/omelette.phtml");
-		if (isElementPresentXP("//form[@action='omelette.phtml']/input[@type='submit']", driver)) {
-			driver.findElement(By.xpath("//form[@action='omelette.phtml']/input[@type='submit']")).click();
+		if (isElementPresentXP("//input[@value='Grab some Omelette']", driver)) {
+			driver.findElement(By.xpath("//input[@value='Grab some Omelette']")).click();
 			logMessage("Successfully ending runOmelette");
 			return true;
 		}
@@ -617,8 +637,8 @@ Some high risk, high return bets can skew TER higher when you're betting on a 0.
 	private static boolean runJelly(WebDriver driver) {
 		logMessage("Starting runJelly");
 		driver.get("http://www.neopets.com/jelly/jelly.phtml");
-		if (isElementPresentXP("//form[@action='jelly.phtml']/input[@type='submit']", driver)) {
-			driver.findElement(By.xpath("//form[@action='jelly.phtml']/input[@type='submit']")).click();
+		if (isElementPresentXP("//input[@value='Grab some Jelly']", driver)) {
+			driver.findElement(By.xpath("//input[@value='Grab some Jelly']")).click();
 			logMessage("Successfully ending runJelly");
 			return true;
 		}
@@ -1423,8 +1443,8 @@ Some high risk, high return bets can skew TER higher when you're betting on a 0.
 
 		int neopoints = Integer.parseInt(driver.findElement(By.id("npanchor")).getText().replace(",", ""));
 		if (neopoints < MINIMUM_CASH_ON_HAND) {
-			driver.findElement(By.xpath("//*[@id=\"content\"]/table/tbody/tr/td[2]/table[1]/tbody/tr/td[2]/div/table/tbody/tr[2]/td/table/tbody/tr[2]/td/div/input[1]")).clear();
-			driver.findElement(By.xpath("//*[@id=\"content\"]/table/tbody/tr/td[2]/table[1]/tbody/tr/td[2]/div/table/tbody/tr[2]/td/table/tbody/tr[2]/td/div/input[1]")).sendKeys("" + (MINIMUM_CASH_ON_HAND - neopoints));
+			driver.findElement(By.xpath("//td[@class='contentModuleContent']/table/tbody/tr[2]/td/div/input[1]")).clear();
+			driver.findElement(By.xpath("//td[@class='contentModuleContent']/table/tbody/tr[2]/td/div/input[1]")).sendKeys("" + (MINIMUM_CASH_ON_HAND - neopoints));
 			driver.findElement(By.xpath("//input[@value='Withdraw']")).click();
 			handleAlert(driver);
 		}
@@ -1442,8 +1462,8 @@ Some high risk, high return bets can skew TER higher when you're betting on a 0.
 	private static boolean runAltadorCouncil(WebDriver driver) {
 		logMessage("Starting runAltadorCouncil");
 		driver.get("http://www.neopets.com/altador/council.phtml?prhv=" + ALTADOR_URL);
-		if (isElementPresentXP("//*[@id=\"content\"]/table/tbody/tr/td[2]/div[2]/form/input[3]", driver)) {
-			driver.findElement(By.xpath("//*[@id=\"content\"]/table/tbody/tr/td[2]/div[2]/form/input[3]")).click();
+		if (isElementPresentXP("//input[@value='Collect your gift']", driver)) {
+			driver.findElement(By.xpath("//input[@value='Collect your gift']")).click();
 			logMessage("Successfully ending runAltadorCouncil");
 			return true;
 		}
@@ -1611,6 +1631,21 @@ Some high risk, high return bets can skew TER higher when you're betting on a 0.
 		}
 		logMessage("Failed ending runAppleBobbing");
 		return false;
+	}
+
+	/**
+	 * Plays the Coconut Shy 20 times.
+	 * @param driver The WebDriver
+	 * @return A boolean telling if the activity successfully finished or not.
+	 * @see NeoDailies#oncePerDay(WebDriver, String, String) oncePerDay
+	 */
+	private static boolean runCoconutShy(WebDriver driver) {
+		logMessage("Starting runCoconutShy");
+		for (int i = 0; i < 20; i++) {
+			driver.get("http://www.neopets.com/halloween/process_cocoshy.phtml?coconut=3");
+		}
+		logMessage("Successfully ending runCoconutShy");
+		return true;
 	}
 
 	/**
@@ -2121,55 +2156,55 @@ Some high risk, high return bets can skew TER higher when you're betting on a 0.
 		//double answer = angleKreludor / 22.5;
 		//answer = Math.round(answer);
 		if (angleKreludor >= 0.0 && angleKreludor <= 11.24) {
-			driver.findElement(By.xpath("//*[@id=\"content\"]/table/tbody/tr/td[2]/div[2]/form/table/tbody/tr[2]/td[1]/input")).click();
+			driver.findElement(By.xpath("//input[@value='8']")).click();
 		}
 		else if (angleKreludor >= 11.25 && angleKreludor <= 33.74) {
-			driver.findElement(By.xpath("//*[@id=\"content\"]/table/tbody/tr/td[2]/div[2]/form/table/tbody/tr[2]/td[2]/input")).click();
+			driver.findElement(By.xpath("//input[@value='9']")).click();
 		}
 		else if (angleKreludor >= 33.75 && angleKreludor <= 56.24) {
-			driver.findElement(By.xpath("//*[@id=\"content\"]/table/tbody/tr/td[2]/div[2]/form/table/tbody/tr[2]/td[3]/input")).click();
+			driver.findElement(By.xpath("//input[@value='10']")).click();
 		}
 		else if (angleKreludor >= 56.25 && angleKreludor <= 78.74) {
-			driver.findElement(By.xpath("//*[@id=\"content\"]/table/tbody/tr/td[2]/div[2]/form/table/tbody/tr[2]/td[4]/input")).click();
+			driver.findElement(By.xpath("//input[@value='11']")).click();
 		}
 		else if (angleKreludor >= 78.75 && angleKreludor <= 101.24) {
-			driver.findElement(By.xpath("//*[@id=\"content\"]/table/tbody/tr/td[2]/div[2]/form/table/tbody/tr[2]/td[5]/input")).click();
+			driver.findElement(By.xpath("//input[@value='12']")).click();
 		}
 		else if (angleKreludor >= 101.25 && angleKreludor <= 123.74) {
-			driver.findElement(By.xpath("//*[@id=\"content\"]/table/tbody/tr/td[2]/div[2]/form/table/tbody/tr[2]/td[6]/input")).click();
+			driver.findElement(By.xpath("//input[@value='13']")).click();
 		}
 		else if (angleKreludor >= 123.75 && angleKreludor <= 146.24) {
-			driver.findElement(By.xpath("//*[@id=\"content\"]/table/tbody/tr/td[2]/div[2]/form/table/tbody/tr[2]/td[7]/input")).click();
+			driver.findElement(By.xpath("//input[@value='14']")).click();
 		}
 		else if (angleKreludor >= 146.25 && angleKreludor <= 168.74) {
-			driver.findElement(By.xpath("//*[@id=\"content\"]/table/tbody/tr/td[2]/div[2]/form/table/tbody/tr[2]/td[8]/input")).click();
+			driver.findElement(By.xpath("//input[@value='15']")).click();
 		}
 		else if (angleKreludor >= 168.75 && angleKreludor <= 191.24) {
-			driver.findElement(By.xpath("//*[@id=\"content\"]/table/tbody/tr/td[2]/div[2]/form/table/tbody/tr[1]/td[1]/input")).click();
+			driver.findElement(By.xpath("//input[@value='0']")).click();
 		}
 		else if (angleKreludor >= 191.25 && angleKreludor <= 213.74) {
-			driver.findElement(By.xpath("//*[@id=\"content\"]/table/tbody/tr/td[2]/div[2]/form/table/tbody/tr[1]/td[2]/input")).click();
+			driver.findElement(By.xpath("//input[@value='1'][@name='phase_choice']")).click();
 		}
 		else if (angleKreludor >= 213.75 && angleKreludor <= 236.24) {
-			driver.findElement(By.xpath("//*[@id=\"content\"]/table/tbody/tr/td[2]/div[2]/form/table/tbody/tr[1]/td[3]/input")).click();
+			driver.findElement(By.xpath("//input[@value='2']")).click();
 		}
 		else if (angleKreludor >= 236.25 && angleKreludor <= 258.74) {
-			driver.findElement(By.xpath("//*[@id=\"content\"]/table/tbody/tr/td[2]/div[2]/form/table/tbody/tr[1]/td[4]/input")).click();
+			driver.findElement(By.xpath("//input[@value='3']")).click();
 		}
 		else if (angleKreludor >= 258.75 && angleKreludor <= 281.24) {
-			driver.findElement(By.xpath("//*[@id=\"content\"]/table/tbody/tr/td[2]/div[2]/form/table/tbody/tr[1]/td[5]/input")).click();
+			driver.findElement(By.xpath("//input[@value='4']")).click();
 		}
 		else if (angleKreludor >= 281.25 && angleKreludor <= 303.74) {
-			driver.findElement(By.xpath("//*[@id=\"content\"]/table/tbody/tr/td[2]/div[2]/form/table/tbody/tr[1]/td[6]/input")).click();
+			driver.findElement(By.xpath("//input[@value='5']")).click();
 		}
 		else if (angleKreludor >= 303.75 && angleKreludor <= 326.24) {
-			driver.findElement(By.xpath("//*[@id=\"content\"]/table/tbody/tr/td[2]/div[2]/form/table/tbody/tr[1]/td[7]/input")).click();
+			driver.findElement(By.xpath("//input[@value='6']")).click();
 		}
 		else if (angleKreludor >= 326.25 && angleKreludor <= 348.74) {
-			driver.findElement(By.xpath("//*[@id=\"content\"]/table/tbody/tr/td[2]/div[2]/form/table/tbody/tr[1]/td[8]/input")).click();
+			driver.findElement(By.xpath("//input[@value='7']")).click();
 		}
 		else if (angleKreludor >= 348.75 && angleKreludor <= 360.0) {
-			driver.findElement(By.xpath("//*[@id=\"content\"]/table/tbody/tr/td[2]/div[2]/form/table/tbody/tr[2]/td[1]/input")).click();
+			driver.findElement(By.xpath("//input[@value='8']")).click();
 		}
 
 		sleepMode(5000);
@@ -2532,7 +2567,6 @@ Some high risk, high return bets can skew TER higher when you're betting on a 0.
 		return false;
 	}
 
-
 	/**
 	 * Purchases 1000 shares of any stock currently at 15np per share.
 	 * Uses the bargain stock list and grabs the first stock it sees at 15np.
@@ -2732,7 +2766,7 @@ Some high risk, high return bets can skew TER higher when you're betting on a 0.
 	private static boolean runIslandMystic(WebDriver driver) {
 		logMessage("Starting runIslandMystic");
 		driver.get("http://www.neopets.com/island/mystichut.phtml");
-		if (isElementPresentXP("//*[@id=\"header\"]/table/tbody/tr[1]/td[1]/a/img", driver)) {
+		if (isElementPresentXP("//img[@src='http://images.neopets.com/island/mystic.gif']", driver)) {
 			logMessage("Successfully ending runIslandMystic");
 			return true;
 		}
@@ -2794,7 +2828,7 @@ Some high risk, high return bets can skew TER higher when you're betting on a 0.
 			driver.findElement(By.xpath("//*[@id=\"dom_overlay_container\"]")).click();
 		}*/
 
-		logMessage("Successfully ending runFaeries");
+		logMessage("Successfully ending runAdvent");
 		return true;
 	}
 
@@ -2865,6 +2899,28 @@ Some high risk, high return bets can skew TER higher when you're betting on a 0.
 		}
 		logMessage("Successfully ending runLabRay");
 		return true;
+	}
+    
+    /**
+	 * Zaps the user's chosen lab rat petpet. Emails them the result of the zap.
+	 * @param driver The WebDriver
+	 * @return A boolean telling if the activity successfully finished or not.
+	 * @see NeoDailies#oncePerDay(WebDriver, String, String) oncePerDay
+	 */
+	private static boolean runPetpetLabRay(WebDriver driver) {
+		logMessage("Starting PetpetLabRay");
+        driver.get("http://www.neopets.com/petpetlab.phtml");
+
+        driver.findElement(By.xpath("//input[@value='" + ZAPPED_PETPET_OWNER + "']")).click();
+        driver.findElement(By.xpath("//input[@value='Zap the poor Petpet!']")).click();
+
+        if (isElementPresentXP("//*[@id='content']/table/tbody/tr/td[2]", driver)) {
+            String message = driver.findElement(By.xpath("//*[@id='content']/table/tbody/tr/td[2]")).getText().replace("\n", " ").trim();
+            sendEmail(message);
+        }
+
+        logMessage("Successfully ending PetpetLabRay");
+        return true;
 	}
 
 	/**
@@ -3395,6 +3451,15 @@ Some high risk, high return bets can skew TER higher when you're betting on a 0.
 			else if (xmlNode.equals("Fishing")) {
 				successTask = runFishing(driver);
 			}
+			else if (xmlNode.equals("WheelExcitement")) {
+				successTask = runWheelExcitement(driver);
+			}
+			else if (xmlNode.equals("WheelMediocrity")) {
+				successTask = runWheelMediocrity(driver);
+			}
+			else if (xmlNode.equals("WheelMisfortune")) {
+				successTask = runWheelMisfortune(driver);
+			}
 			else if (xmlNode.equals("GraveDanger")) {
 				successTask = runGraveDanger(driver);
 			}
@@ -3455,8 +3520,8 @@ Some high risk, high return bets can skew TER higher when you're betting on a 0.
 
 		int neopoints = Integer.parseInt(driver.findElement(By.id("npanchor")).getText().replace(",", ""));
 		if (neopoints < 10000) {
-			driver.findElement(By.xpath("//*[@id=\"content\"]/table/tbody/tr/td[2]/table[1]/tbody/tr/td[2]/div/table/tbody/tr[2]/td/table/tbody/tr[2]/td/div/input[1]")).clear();
-			driver.findElement(By.xpath("//*[@id=\"content\"]/table/tbody/tr/td[2]/table[1]/tbody/tr/td[2]/div/table/tbody/tr[2]/td/table/tbody/tr[2]/td/div/input[1]")).sendKeys("" + (MINIMUM_CASH_ON_HAND - neopoints));
+			driver.findElement(By.xpath("//td[@class='contentModuleContent']/table/tbody/tr[2]/td/div/input[1]")).clear();
+			driver.findElement(By.xpath("//td[@class='contentModuleContent']/table/tbody/tr[2]/td/div/input[1]")).sendKeys("" + (MINIMUM_CASH_ON_HAND - neopoints));
 			driver.findElement(By.xpath("//input[@value='Withdraw']")).click();
 			handleAlert(driver);
 		}
@@ -3481,7 +3546,7 @@ Some high risk, high return bets can skew TER higher when you're betting on a 0.
 		for (int x = 3; isElementPresentXP("//*[@id=\"postForm\"]/table[1]/tbody/tr[" + x + "]/td[4]", driver); x+=2) {
 			try {
 				int currentPrice = Integer.parseInt(driver.findElement(By.xpath("//*[@id=\"postForm\"]/table[1]/tbody/tr[" + x + "]/td[4]")).getText().trim());
-				if (currentPrice >= 60) {
+				if (currentPrice >= MINIMUM_STOCK_SELL_PRICE) {
 					sellingStocks = true;
 					String stockID = driver.findElement(By.xpath("//*[@id=\"postForm\"]/table[1]/tbody/tr[" + x + "]/td[1]/img[1]")).getAttribute("id").trim();
 					stockID = stockID.substring(0, stockID.indexOf("d"));
@@ -4122,6 +4187,82 @@ Some high risk, high return bets can skew TER higher when you're betting on a 0.
 	}
 
 	/**
+	 * Spins the Wheel of Excitement.
+	 * @param driver The WebDriver
+	 * @return A boolean telling if the activity successfully finished or not.
+	 * @see NeoDailies#oncePerInterval(WebDriver, String, long)  oncePerInterval
+	 */
+	private static boolean runWheelExcitement(WebDriver driver) {
+		logMessage("Starting runWheelExcitement");
+		driver.get("http://www.neopets.com/faerieland/wheel.phtml");
+		Actions wheelClicker = new Actions(driver);
+		sleepMode(2000);
+		try {
+			wheelClicker.moveToElement(driver.findElement(By.xpath("//td[@class='content']/div")), 540, 300).click().build().perform();
+			sleepMode(20000);
+			wheelClicker.moveToElement(driver.findElement(By.xpath("//td[@class='content']/div")), 540, 300).click().build().perform();
+		} catch (Exception ex) {
+			logMessage("Failed ending runWheelExcitement");
+			return false;
+		}
+		sleepMode(4000);
+		logMessage("Successfuly ending runWheelExcitement");
+		return true;
+	}
+
+	/**
+	 * Spins the Wheel of Mediocrity.
+	 * @param driver The WebDriver
+	 * @return A boolean telling if the activity successfully finished or not.
+	 * @see NeoDailies#oncePerInterval(WebDriver, String, long)  oncePerInterval
+	 */
+	public static boolean runWheelMediocrity(WebDriver driver)
+	{
+		logMessage("Starting runWheelMediocrity");
+		driver.get("http://www.neopets.com/prehistoric/mediocrity.phtml");
+		Actions wheelClicker = new Actions(driver);
+		sleepMode(2000);
+		try {
+			wheelClicker.moveToElement(driver.findElement(By.xpath("//td[@class='content']/div")), 540, 300).click().build().perform();
+			sleepMode(20000);
+			wheelClicker.moveToElement(driver.findElement(By.xpath("//td[@class='content']/div")), 540, 300).click().build().perform();
+		}
+		catch(Exception ex) {
+			logMessage("Failed ending runWheelMediocrity");
+			return false;
+		}
+		sleepMode(4000);
+		logMessage("Successfuly ending runWheelMediocrity");
+		return true;
+	}
+
+	/**
+	 * Spins the Wheel of Misfortune.
+	 * @param driver The WebDriver
+	 * @return A boolean telling if the activity successfully finished or not.
+	 * @see NeoDailies#oncePerInterval(WebDriver, String, long)  oncePerInterval
+	 */
+	public static boolean runWheelMisfortune(WebDriver driver)
+	{
+		logMessage("Starting runWheelMisforune");
+		driver.get("http://www.neopets.com/prehistoric/mediocrity.phtml");
+		Actions wheelClicker = new Actions(driver);
+		sleepMode(2000);
+		try {
+			wheelClicker.moveToElement(driver.findElement(By.xpath("//td[@class='content']/div")), 540, 300).click().build().perform();
+			sleepMode(20000);
+			wheelClicker.moveToElement(driver.findElement(By.xpath("//td[@class='content']/div")), 540, 300).click().build().perform();
+		}
+		catch(Exception ex) {
+			logMessage("Failed ending runWheelMisfortune");
+			return false;
+		}
+		sleepMode(4000);
+		logMessage("Successfuly ending runWheelMisfortune");
+		return true;
+	}
+
+	/**
 	 * Collects the user's previous Grave Danger reward, then uses the user's designated petpet to run it again.
 	 * @param driver The WebDriver
 	 * @return A boolean telling if the activity successfully finished or not.
@@ -4708,6 +4849,12 @@ Some high risk, high return bets can skew TER higher when you're betting on a 0.
 				driver.get("http://www.neopets.com/winter/snowager.phtml");
 				if (isElementPresentXP("//*[@id=\"content\"]/table/tbody/tr/td/p[4]/a", driver)) {
 					driver.findElement(By.xpath("//*[@id=\"content\"]/table/tbody/tr/td/p[4]/a")).click();
+					logMessage("Successfully ending Snowager.");
+				}
+				// During the month of December (hibernation)
+				else if (Utils.isElementPresentXP("//input[@value='Attempt to steal a piece of treasure']", driver)) {
+					driver.findElement(By.xpath("//input[@value='Attempt to steal a piece of treasure']")).click();
+					logMessage("Successfully ending Snowager.");
 				}
 			}
 		}
