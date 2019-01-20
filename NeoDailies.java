@@ -79,7 +79,7 @@ public class NeoDailies {
 	public static final String PASSWORD = "CHANGE_ME"; //Change this to your neopets account password
 	public static final String PETNAME = "CHANGE_ME"; //Change this to your main pet's name on your neopets account
 	public static final String PET_ZAPPED = "CHANGE_ME"; //Change this to your lab rat's name
-    public static final String PETPET_ZAPPED_OWNER = "CHANGE_ME"; //Change this to the name of the pet who owns your lab rat petpet. (Caution! Conflicts with Grave Danger!)
+	public static final String PETPET_ZAPPED_OWNER = "CHANGE_ME"; //Change this to the name of the pet who owns your lab rat petpet. (Caution! Conflicts with Grave Danger!)
 	public static final String ALTADOR_URL = "CHANGE_ME"; //Change this to your Altador Council prize URL address ID (at the end of the URL).
 	public static final String WISHING_WELL_ITEM = "Turned Tooth"; //Shouldn't need to be changed. This is the item you wish for.
 	public static final String BD_OPPONENT = "Giant Spectral Mutant Walein"; //Change this as needed to the opponent you fight.
@@ -87,7 +87,7 @@ public class NeoDailies {
 	public static final int GRAVE_PETPET = 1; //Change this as needed. This is the index of the petpet. 1 would be your first pet's petpet.
 	public static final int MINIMUM_KEEP_VALUE = 100; //Change this as needed. This is the minimum NP value where items in your inventory won't be donated.
 	public static final int MINIMUM_CASH_ON_HAND = 100000; //Shouldn't need to be changed. This is the minimum NP we have on hand to start the day.
-    public static final int MINIMUM_STOCK_SELL_PRICE = 60; //Change this to the minimum price you want your stocks to be sold at.
+	public static final int MINIMUM_STOCK_SELL_PRICE = 60; //Change this to the minimum price you want your stocks to be sold at.
 
 	//These shouldn't need changing, but the costs may need occasional updating. Only used for kitchen quest.
 	public static final int AVERAGE_ONE_DUBLOON_COST = 700;
@@ -424,7 +424,7 @@ public class NeoDailies {
 	 * @see NeoDailies#runMoodImprove(WebDriver) runMoodImprove
 	 * @see NeoDailies#runFaeries(WebDriver) runFaeries
 	 * @see NeoDailies#runLabRay(WebDriver) runLabRay
-     * @see NeoDailies#runPetpetLabRay(WebDriver) runPetpetLabRay
+	 * @see NeoDailies#runPetpetLabRay(WebDriver) runPetpetLabRay
 	 * @see NeoDailies#runStocks(WebDriver) runStocks
 	 * @see NeoDailies#runCoincidence(WebDriver) runCoincidence
 	 * @see NeoDailies#runLottery(WebDriver) runLottery
@@ -556,7 +556,7 @@ public class NeoDailies {
 			else if (xmlNode.equals("LabRay")) {
 				successTask = runLabRay(driver);
 			}
-            else if (xmlNode.equals("PetpetLabRay")) {
+			else if (xmlNode.equals("PetpetLabRay")) {
 				successTask = runPetpetLabRay(driver);
 			}
 			else if (xmlNode.equals("Stocks")) {
@@ -2460,7 +2460,7 @@ public class NeoDailies {
 			}
 
 			String hintedSentence = driver.findElement(By.xpath("//*[@id='content']/table/tbody/tr/td[2]/table/tbody/tr[2]/td")).getText().trim();
-			hintedSentence = hintedSentence.replace("   ", "~");
+			hintedSentence = hintedSentence.replace("	", "~");
 			hintedSentence = hintedSentence.replace(" ", "");
 			hintedSentence = hintedSentence.replace("~", " ");
 			hintedSentence = hintedSentence.replace("\n", " ");
@@ -2513,7 +2513,7 @@ public class NeoDailies {
 				sleepMode(5000);
 
 				hintedSentence = driver.findElement(By.xpath("//*[@id='content']/table/tbody/tr/td[2]/table/tbody/tr[2]/td")).getText().trim();
-				hintedSentence = hintedSentence.replace("   ", "~");
+				hintedSentence = hintedSentence.replace("	", "~");
 				hintedSentence = hintedSentence.replace(" ", "");
 				hintedSentence = hintedSentence.replace("~", " ");
 				hintedSentence = hintedSentence.replace("\n", " ");
@@ -2700,7 +2700,7 @@ public class NeoDailies {
 		if (isElementPresentXP("//input[@value='Open the stone door to the Deserted Tomb...']", driver)) {
 			driver.findElement(By.xpath("//input[@value='Open the stone door to the Deserted Tomb...']")).click();
 			if (isElementPresentXP("//input[@value=\"Continue on, at the risk of never returning.  There's no turning back.\"]", driver)) {
-				driver.findElement(By.xpath("//input[@value=\"Continue on, at the risk of never returning.  There's no turning back.\"]")).click();
+				driver.findElement(By.xpath("//input[@value=\"Continue on, at the risk of never returning.	There's no turning back.\"]")).click();
 				logMessage("Successfully ending runGeraptikuTomb");
 				return true;
 			}
@@ -2900,8 +2900,8 @@ public class NeoDailies {
 		logMessage("Successfully ending runLabRay");
 		return true;
 	}
-    
-    /**
+	
+	/**
 	 * Zaps the user's chosen lab rat petpet. Emails them the result of the zap.
 	 * @param driver The WebDriver
 	 * @return A boolean telling if the activity successfully finished or not.
@@ -2909,18 +2909,18 @@ public class NeoDailies {
 	 */
 	private static boolean runPetpetLabRay(WebDriver driver) {
 		logMessage("Starting PetpetLabRay");
-        driver.get("http://www.neopets.com/petpetlab.phtml");
+		driver.get("http://www.neopets.com/petpetlab.phtml");
 
-        driver.findElement(By.xpath("//input[@value='" + ZAPPED_PETPET_OWNER + "']")).click();
-        driver.findElement(By.xpath("//input[@value='Zap the poor Petpet!']")).click();
+		driver.findElement(By.xpath("//input[@value='" + ZAPPED_PETPET_OWNER + "']")).click();
+		driver.findElement(By.xpath("//input[@value='Zap the poor Petpet!']")).click();
 
-        if (isElementPresentXP("//*[@id='content']/table/tbody/tr/td[2]", driver)) {
-            String message = driver.findElement(By.xpath("//*[@id='content']/table/tbody/tr/td[2]")).getText().replace("\n", " ").trim();
-            sendEmail(message);
-        }
+		if (isElementPresentXP("//*[@id='content']/table/tbody/tr/td[2]", driver)) {
+			String message = driver.findElement(By.xpath("//*[@id='content']/table/tbody/tr/td[2]")).getText().replace("\n", " ").trim();
+			sendEmail(message);
+		}
 
-        logMessage("Successfully ending PetpetLabRay");
-        return true;
+		logMessage("Successfully ending PetpetLabRay");
+		return true;
 	}
 
 	/**
@@ -3699,7 +3699,7 @@ public class NeoDailies {
 
 		for (; isElementPresentXP("//*[@id=\"content\"]/table/tbody/tr/td[2]/center[2]/table/tbody/tr[" + x + "]/td/b[1]", driver); x+=3) {
 			String jobDesc = driver.findElement(By.xpath("//*[@id=\"content\"]/table/tbody/tr/td[2]/center[2]/table/tbody/tr[" + x + "]/td")).getText().trim();
-			jobDesc = jobDesc.replace("\n\n", "<br>").replace("   ", "<br>");
+			jobDesc = jobDesc.replace("\n\n", "<br>").replace("	  ", "<br>");
 			String[] jobDescSplit = jobDesc.split(" ");
 			int itemAmount = Integer.parseInt(jobDescSplit[1]);
 			int reward = Integer.parseInt(jobDescSplit[jobDescSplit.length - 2].replace(",", ""));
@@ -3729,7 +3729,7 @@ public class NeoDailies {
 
 		logMessage("Winning job found");
 		String jobDesc = driver.findElement(By.xpath("//*[@id=\"content\"]/table/tbody/tr/td[2]/center[2]/table/tbody/tr[" + bestItemXpathIndex + "]/td")).getText().trim();
-		jobDesc = jobDesc.replace("\n\n", "<br>").replace("   ", "<br>");
+		jobDesc = jobDesc.replace("\n\n", "<br>").replace("	  ", "<br>");
 		String[] jobDescSplit = jobDesc.split(" ");
 		int itemAmount = Integer.parseInt(jobDescSplit[1]);
 		String item = jobDesc.substring(jobDesc.indexOf(":") + 1, jobDesc.indexOf("<")).trim();
@@ -4190,7 +4190,7 @@ public class NeoDailies {
 	 * Spins the Wheel of Excitement.
 	 * @param driver The WebDriver
 	 * @return A boolean telling if the activity successfully finished or not.
-	 * @see NeoDailies#oncePerInterval(WebDriver, String, long)  oncePerInterval
+	 * @see NeoDailies#oncePerInterval(WebDriver, String, long)	 oncePerInterval
 	 */
 	private static boolean runWheelExcitement(WebDriver driver) {
 		logMessage("Starting runWheelExcitement");
@@ -4214,7 +4214,7 @@ public class NeoDailies {
 	 * Spins the Wheel of Mediocrity.
 	 * @param driver The WebDriver
 	 * @return A boolean telling if the activity successfully finished or not.
-	 * @see NeoDailies#oncePerInterval(WebDriver, String, long)  oncePerInterval
+	 * @see NeoDailies#oncePerInterval(WebDriver, String, long)	 oncePerInterval
 	 */
 	public static boolean runWheelMediocrity(WebDriver driver)
 	{
@@ -4240,7 +4240,7 @@ public class NeoDailies {
 	 * Spins the Wheel of Misfortune.
 	 * @param driver The WebDriver
 	 * @return A boolean telling if the activity successfully finished or not.
-	 * @see NeoDailies#oncePerInterval(WebDriver, String, long)  oncePerInterval
+	 * @see NeoDailies#oncePerInterval(WebDriver, String, long)	 oncePerInterval
 	 */
 	public static boolean runWheelMisfortune(WebDriver driver)
 	{
