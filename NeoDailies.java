@@ -53,7 +53,9 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.OutputType;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.UnhandledAlertException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -80,11 +82,11 @@ public class NeoDailies {
 	public static final String PETNAME = "CHANGE_ME"; //Change this to your main pet's name on your neopets account
 	public static final String PET_ZAPPED = "CHANGE_ME"; //Change this to your lab rat's name
 	public static final String ALTADOR_URL = "CHANGE_ME"; //Change this to your Altador Council prize URL address ID (at the end of the URL).
-	public static final String WISHING_WELL_ITEM = "Turned Tooth"; //Shouldn't need to be changed. This is the item you wish for.
+	public static final String WISHING_WELL_ITEM = "Halloween Y14 Goodie Bag"; //Shouldn't need to be changed. This is the item you wish for.
 	public static final String BD_OPPONENT = "Giant Spectral Mutant Walein"; //Change this as needed to the opponent you fight.
 	public static final boolean RUNNING_ON_LAPTOP = true; //Shouldn't need to be changed. This is for my (TheLazyGamer) own convenience to run it on my Pi.
 	public static final int GRAVE_PETPET = 1; //Change this as needed. This is the index of the petpet. 1 would be your first pet's petpet.
-	public static final int MINIMUM_KEEP_VALUE = 100; //Change this as needed. This is the minimum NP value where items in your inventory won't be donated.
+	public static final int MINIMUM_KEEP_VALUE = 1000; //Change this as needed. This is the minimum NP value where items in your inventory won't be donated.
 	public static final int MINIMUM_CASH_ON_HAND = 100000; //Shouldn't need to be changed. This is the minimum NP we have on hand to start the day.
 
 	//These shouldn't need changing, but the costs may need occasional updating. Only used for kitchen quest.
@@ -102,9 +104,9 @@ public class NeoDailies {
 
 	public static ArrayList<String> shopURLs = new ArrayList<String>();
 	public static FileWriter logWriter = null;
-	public static final ArrayList<String> IGNORED_ITEMS = new ArrayList<String>();
+	public static ArrayList<String> ignoredItems = new ArrayList<String>();
 	public static ArrayList<String> storedMessagesList = new ArrayList<String>();
-
+	//TODO make an ArrayList called WhiteList, for all items we deposit even though they're dirt cheap, These include "Weak Bottled" and "Dubloon Coin". Search for their current uses
 	/**
 	 * The main method. Contains the loop where everything runs.
 	 * It is the controller for all the automation.
@@ -112,14 +114,16 @@ public class NeoDailies {
 	 * @throws Exception This should never happen, but Java requires it.
 	 */
 	public static void main(String[] argv) throws Exception {
-		/*IGNORED_ITEMS.add("Dubloon");
-		IGNORED_ITEMS.add("Codestone");*/
-		IGNORED_ITEMS.add("Birthday Cupcake");
-		IGNORED_ITEMS.add(" Map");
-		IGNORED_ITEMS.add(" map");
-		IGNORED_ITEMS.add("Wraith Ectoplasm");
-		IGNORED_ITEMS.add("Taelias Concoction");
-
+		/*ignoredItems.add("Dubloon");
+		ignoredItems.add("Codestone");*/
+		ignoredItems.add("Birthday Cupcake");
+		ignoredItems.add(" Map");
+		ignoredItems.add(" map");
+		ignoredItems.add("Basic Gift Box");
+		ignoredItems.add("Wraith Ectoplasm");
+		ignoredItems.add("Taelias Concoction");
+		//TODO make this open and close to prevent mem leak
+		//TODO after emailing errors 3 times in a row, stop
 		File logFile = new File("BotLog.log");
 		logWriter = new FileWriter(logFile, true);
 
@@ -183,18 +187,20 @@ public class NeoDailies {
 					sleepMode(10000);
 
 					oncePerDay(driver, "Bank", "EEEE");
-
+//TODO calculate the amount to withdraw in the morning based on the age of the account and how much they need to bet on food club
 					oncePerInterval(driver, "StockSell", 1800);
-
+					//TODO add an option on checkmoney to deposit everything above 100k, so as to avoid big tax or sloth events
 					oncePerInterval(driver, "CheckMoney", 1800);
-
+//TODO add the daily movie food thing and/or checking into neolodge
 					oncePerDay(driver, "Stocks", "EEEE");
-
+//TODO auto-deposit Basic Gift Box
 					//oncePerDay(driver, "Coincidence", "EEEE");
-
+//TODO add magma pool check and email if found
+//TODO instead of how many items in store as counter, use how many unique items, factoring in max amount based on shop size
 					//oncePerDay(driver, "Lottery", "EEEE");
-/*
-Food club personal algorithm
+					/*
+//TODO Food club personal algorithm
+http://www.jellyneo.net/?go=food_club
 http://neofoodclub.fr/ Round 6676 is the oldest round
 https://gist.github.com/neothrow/f87b2948ed6496534db2f075f15f2afa
 http://www.neopets.com/~myfoodclubbets
@@ -214,17 +220,20 @@ TER is total expected return, and its payout factored down because everyone has 
 You want TER to be greater than 10, since every day you max bet ten times. Anyone can use (TER-10)*(Max Bet) to find their own expected profit.
 Usually higher TER is better, but you also want to watch the bust rate.
 Some high risk, high return bets can skew TER higher when you're betting on a 0.5% chance to get 200:10
-*/
+					 */
 					oncePerDay(driver, "FoodClub", "EEEE");
-
+//TODO once a week or so, comment or post on the neoboards promoting our shop
 					oncePerDay(driver, "LabRay", "EEEE");
-
+					//TODO fix faerie quests not being finished
 					//TODO Petpet lab ray
 
-					oncePerDay(driver, "Cupcake", "EEEE");
-
+					//TODO Could fix cupcake not emailing users upon failure, but TNT disabled cupcakes
+					//TODO If cupcakes do get enabled, add a 30min hunger check to feed the pet any SDB cupcakes
+					//oncePerDay(driver, "Cupcake", "EEEE");
+//TODO for price checking and SDB withdrawal, check that item isn't Rarity 500 NC cash item
 					oncePerDay(driver, "TDMBGPOP", "EEEE");
-
+//TODO grab all items in store, then check SDB if we have any more in there, and throw them into store.
+//TODO auto bottled faerie opener
 					oncePerDay(driver, "Battledome", "EEEE");
 
 					oncePerInterval(driver, "Employment", 3600);
@@ -263,7 +272,7 @@ Some high risk, high return bets can skew TER higher when you're betting on a 0.
 
 					oncePerDay(driver, "Cliffhanger", "EEEE");
 
-					oncePerInterval(driver, "TrudysSurprise", (long) 7200);
+					oncePerInterval(driver, "TrudysSurprise", (long) 7200); //TODO Can we use the daily notification as a validator if this successfully ran or not?
 
 					oncePerInterval(driver, "Expellibox", (long) 7200);
 
@@ -279,14 +288,14 @@ Some high risk, high return bets can skew TER higher when you're betting on a 0.
 
 					oncePerDay(driver, "Faeries", "EEEE");
 
-					//oncePerDay(driver, "Advent", "EEEE");
+					oncePerDay(driver, "Advent", "EEEE");
 
 					oncePerDay(driver, "KikoPop", "EEEE");
 
 					oncePerDay(driver, "MonthlyFreeby", "MMM");
 
 					oncePerInterval(driver, "NeoMail", (long) 3600);
-
+					//TODO add the ability to subscribe to an item in the trading post and/or auction house, and get alerted to any new listings
 					oncePerInterval(driver, "GuessMarrow", (long) 86400);
 
 					oncePerInterval(driver, "SymolHole", (long) 3600);
@@ -319,7 +328,7 @@ Some high risk, high return bets can skew TER higher when you're betting on a 0.
 					oncePerSchedule(driver, "Deposit", depositTime);
 
 					oncePerInterval(driver, "DeleteItems", (long) 1800);
-
+//TODO for Reprice and Stock, One Dubloon Coins are getting donated because they're under 1k. Make sure whitelist is used for fix
 					oncePerInterval(driver, "RepriceItems", (long) 172800);
 
 					oncePerInterval(driver, "StockItems", (long) 1800);
@@ -356,18 +365,24 @@ Some high risk, high return bets can skew TER higher when you're betting on a 0.
 				String sStackTrace = sw.toString(); //stacktrace as a string
 				logMessage("Hit some exception:");
 				logMessage(sStackTrace);
-				File scrFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
-				if (RUNNING_ON_LAPTOP) {
-					FileUtils.copyFile(scrFile, new File(Instant.now().getEpochSecond() + "_" + ex.getClass().getCanonicalName().replace(".", "_") + ".jpg"));
-					if (!sStackTrace.contains("NoSuchElementException")) {
-						sendEmail(sStackTrace.replace("\"", "_"));
+				try {
+					handleAlert(driver);
+					File scrFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+					if (RUNNING_ON_LAPTOP) {
+						FileUtils.copyFile(scrFile, new File(Instant.now().getEpochSecond() + "_" + ex.getClass().getCanonicalName().replace(".", "_") + ".jpg"));
+						if (!sStackTrace.contains("NoSuchElementException")) {
+							sendEmail(sStackTrace.replace("\"", "_"));
+						}
 					}
+					else {
+						FileUtils.copyFile(scrFile, new File(Instant.now().getEpochSecond() + ".jpg"));
+					}
+					driver.quit();
+					sleepMode(300000); //Sleep 5 minutes
 				}
-				else {
-					FileUtils.copyFile(scrFile, new File(Instant.now().getEpochSecond() + ".jpg"));
+				catch (Exception exx) {
+					//Runtime.getRuntime().exec("C:\\Users\\" + WINDOWS_USER + "\\Documents\\RebootLaptop.bat"); //TODO make this better located
 				}
-				driver.quit();
-				sleepMode(300000); //Sleep 5 minutes
 			}
 		}
 	}
@@ -1677,7 +1692,7 @@ Some high risk, high return bets can skew TER higher when you're betting on a 0.
 	 * @return A boolean telling if the activity successfully finished or not.
 	 * @see NeoDailies#oncePerDay(WebDriver, String, String) oncePerDay
 	 */
-	private static boolean runBattledome(WebDriver driver) {
+	private static boolean runBattledome(WebDriver driver) { //TODO add her code that picks fighting pet (if cupcake doesn't abandon we're hosed at the moment since it uses the new neopet)
 		logMessage("Starting runBattledome");
 		driver.get("http://www.neopets.com/dome/fight.phtml");
 
@@ -1709,45 +1724,61 @@ Some high risk, high return bets can skew TER higher when you're betting on a 0.
 		}
 		if (isElementPresentXP("//*[@id=\"start\"]/div", driver)) { //Already fighting
 			while (true) {
-				//Start the battle by clicking Fight
-				driver.findElement(By.xpath("//*[@id=\"start\"]/div")).click();
-				//Click the first equip slot
-				sleepMode(5000);
-				driver.findElement(By.xpath("//*[@id=\"p1e1m\"]/div")).click();
-				//Select first of two weapons
-				sleepMode(2000);
-				driver.findElement(By.xpath("//*[@id=\"p1equipment\"]/div[3]/ul/li[1]/img")).click();
-				//Click the second equip slot
-				sleepMode(2000);
-				driver.findElement(By.xpath("//*[@id=\"p1e2m\"]/div")).click();
-				//Select second of two weapons
-				sleepMode(2000);
-				driver.findElement(By.xpath("//*[@id=\"p1equipment\"]/div[3]/ul/li[2]/img")).click();
-				//Click the faerie ability slot
-				sleepMode(2000);
-				driver.findElement(By.xpath("//*[@id=\"p1am\"]/div")).click();
-				//Click lens flare
-				sleepMode(2000);
-				driver.findElement(By.xpath("//*[@id=\"p1ability\"]/div[3]/table/tbody/tr/td[2]/div/div")).click();
-				//Click Fight to kill opponent
-				sleepMode(2000);
-				driver.findElement(By.id("fight")).click();
-				//Click Collect Rewards
-				int counter = 0;
-				while (!isElementPresentXP("//*[@id=\"playground\"]/div[2]/button[1]", driver) && counter < 15) {
-					counter++;
-					sleepMode(1000);
-				}
-				driver.findElement(By.xpath("//*[@id=\"playground\"]/div[2]/button[1]")).click();
-				//Click Play Again
-				sleepMode(5000);
-				String rewardText = driver.findElement(By.id("bd_rewards")).getText();
+				try {
+					//Start the battle by clicking Fight
+					driver.findElement(By.xpath("//*[@id=\"start\"]/div")).click();
+					//Click the first equip slot
+					sleepMode(5000);
+					driver.findElement(By.xpath("//*[@id=\"p1e1m\"]/div")).click();
+					//Select first of two weapons
+					sleepMode(2000);
+					driver.findElement(By.xpath("//*[@id=\"p1equipment\"]/div[3]/ul/li[1]/img")).click();
+					//Click the second equip slot
+					sleepMode(2000);
+					driver.findElement(By.xpath("//*[@id=\"p1e2m\"]/div")).click();
+					//Select second of two weapons
+					sleepMode(2000);
+					driver.findElement(By.xpath("//*[@id=\"p1equipment\"]/div[3]/ul/li[2]/img")).click();
+					//Click the faerie ability slot
+					sleepMode(2000);
+					driver.findElement(By.xpath("//*[@id=\"p1am\"]/div")).click();
+					//Click lens flare
+					sleepMode(2000);
+					driver.findElement(By.xpath("//*[@id=\"p1ability\"]/div[3]/table/tbody/tr/td[2]/div/div")).click();
+					//Click Fight to kill opponent
+					sleepMode(2000);
+					driver.findElement(By.id("fight")).click();
+					//Click Collect Rewards
+					int counter = 0;
 
-				//Change this to || when TNT breaks their battledome
-				if (rewardText.contains("You have reached the item limit for today!") && rewardText.contains("You have reached the NP limit for today!")) {
-					break;
+					try {
+						while (!isElementPresentXP("//*[@id=\"playground\"]/div[2]/button[1]", driver) && counter < 15) {
+							counter++;
+							sleepMode(1000);
+						}
+						driver.findElement(By.xpath("//*[@id=\"playground\"]/div[2]/button[1]")).click();
+						//Click Play Again
+						sleepMode(5000);
+						String rewardText = driver.findElement(By.id("bd_rewards")).getText();
+
+						//Change this to || when TNT breaks their battledome
+						if (rewardText.contains("You have reached the item limit for today!") && rewardText.contains("You have reached the NP limit for today!")) {
+							break;
+						}
+						driver.findElement(By.id("bdplayagain")).click();
+					}
+					catch (NoSuchElementException ex2) {
+						throw new StaleElementReferenceException("");
+					}
 				}
-				driver.findElement(By.id("bdplayagain")).click();
+				catch (StaleElementReferenceException ex1) {
+					driver.navigate().refresh();
+					sleepMode(10000);
+				}
+				catch (ElementNotVisibleException ex2) {
+					driver.navigate().refresh();
+					sleepMode(10000);
+				}
 			}
 			logMessage("Successfully ending runBattledome");
 			return true;
@@ -1947,6 +1978,10 @@ Some high risk, high return bets can skew TER higher when you're betting on a 0.
 		}
 		catch (Exception ex) {
 			return false;
+		}
+		
+		if (resultLine.endsWith(">")) {
+			resultLine = resultLine.substring(0, resultLine.indexOf("<"));
 		}
 
 		driver.get("http://www.neopets.com/community/index.phtml");
@@ -2542,7 +2577,7 @@ Some high risk, high return bets can skew TER higher when you're betting on a 0.
 	 */
 	private static boolean runStocks(WebDriver driver) {
 		logMessage("Starting runStocks");
-
+		//TODO document the older technique, but with the fixed link http://www.neopets.com/stockmarket.phtml?type=list&search=%&bargain=true
 		driver.get("http://www.neopets.com/stockmarket.phtml?type=list&bargain=true");
 
 		String stockSource = driver.getPageSource();
@@ -2559,8 +2594,9 @@ Some high risk, high return bets can skew TER higher when you're betting on a 0.
 				tickerPrice = tickerPrice.substring(tickerPrice.indexOf(" ")+1, tickerPrice.lastIndexOf(" "));
 
 				if (tickerPrice.equals("15")) {
-					logMessage("Found a stock for 15");
-					driver.get("http://www.neopets.com/stockmarket.phtml?type=buy&ticker=" + stockSourceArr[x].substring(0, stockSourceArr[x].indexOf(" ")));
+					String stockTicker = stockSourceArr[x].substring(0, stockSourceArr[x].indexOf(" "));
+					logMessage("Found a stock for 15: " + stockTicker);
+					driver.get("http://www.neopets.com/stockmarket.phtml?type=buy&ticker=" + stockTicker);
 
 					if (isElementPresentName("amount_shares", driver)) {
 						driver.findElement(By.name("amount_shares")).clear();
@@ -2782,7 +2818,7 @@ Some high risk, high return bets can skew TER higher when you're betting on a 0.
 	 */
 	private static boolean runAdvent(WebDriver driver) {
 		logMessage("Starting runAdvent");
-
+		//TODO make this check if date is Dec 1 to Dec 24
 		driver.get("http://www.neopets.com/winter/adventcalendar.phtml");
 		if (isElementPresentXP("//input[@value='Collect My Prize!!!']", driver)) {
 			driver.findElement(By.xpath("//input[@value='Collect My Prize!!!']")).click();
@@ -2794,7 +2830,7 @@ Some high risk, high return bets can skew TER higher when you're betting on a 0.
 			driver.findElement(By.xpath("//*[@id=\"dom_overlay_container\"]")).click();
 		}*/
 
-		logMessage("Successfully ending runFaeries");
+		logMessage("Successfully ending runAdvent");
 		return true;
 	}
 
@@ -3069,7 +3105,7 @@ Some high risk, high return bets can skew TER higher when you're betting on a 0.
 	private static boolean runCupcake(WebDriver driver) throws IOException {
 		try {
 			logMessage("Starting runCupcake");
-
+			//TODO log stats before and after eating the cupcake
 			Calendar cal = Calendar.getInstance();
 			String currentDateStamp = new SimpleDateFormat("MMMM").format(cal.getTime()) + " " + new SimpleDateFormat("d").format(cal.getTime()) + ",";
 			logMessage("currentDateStamp: " + currentDateStamp);
@@ -3218,8 +3254,10 @@ Some high risk, high return bets can skew TER higher when you're betting on a 0.
 	 * @see NeoDailies#oncePerDay(WebDriver, String, String) oncePerDay
 	 */
 	private static boolean runDeleteItems(WebDriver driver) {
+		//TODO store all items and their prices so we don't hit the sites multiple times for the same item
 		logMessage("Starting runDeleteItems");
 		driver.get("http://www.neopets.com/quickstock.phtml");
+		sleepMode(5000);
 
 		for (int x = 2; isElementPresentXP("//*[@id=\"content\"]/table/tbody/tr/td[2]/form/table/tbody/tr[" + x + "]", driver); x++) {
 			if (isElementPresentXP("//*[@id=\"content\"]/table/tbody/tr/td[2]/form/table/tbody/tr[" + x + "]/td[1]", driver) &&
@@ -3229,7 +3267,7 @@ Some high risk, high return bets can skew TER higher when you're betting on a 0.
 				if (invItem.contains("Battlecard")) {
 					driver.findElement(By.xpath("//*[@id=\"content\"]/table/tbody/tr/td[2]/form/table/tbody/tr[" + x + "]/td[4]/input")).click();
 				}
-				else if (invItem.length() > 1 && !invItem.contains("Weak Bottled")) {
+				else if (invItem.length() > 1 && !invItem.contains("Weak Bottled") && !invItem.contains("Dubloon Coin")) {
 					boolean hasNeoCodexPrice = false;
 					boolean hasJellyNeoPrice = false;
 					boolean priceBelowMin = false;
@@ -3269,7 +3307,7 @@ Some high risk, high return bets can skew TER higher when you're betting on a 0.
 					}
 					sleepMode(5000);
 				}
-				else if (invItem.contains("Weak Bottled")) { //Deposit Weak Bottle Faeries
+				else if (invItem.contains("Weak Bottled") || invItem.contains("Dubloon Coin")) { //Deposit Weak Bottle Faeries and Dubloons
 					driver.findElement(By.xpath("//*[@id=\"content\"]/table/tbody/tr/td[2]/form/table/tbody/tr[" + x + "]/td[3]/input")).click();
 				}
 			}
@@ -3625,6 +3663,7 @@ Some high risk, high return bets can skew TER higher when you're betting on a 0.
 	 * @see NeoDailies#oncePerInterval(WebDriver, String, long) oncePerInterval
 	 */
 	private static boolean runEmployment(WebDriver driver) {
+		//TODO if we have more than 50 items, it breaks. Fix this
 		logMessage("Starting runEmployment");
 		driver.get("http://www.neopets.com/faerieland/employ/employment.phtml?type=jobs&voucher=basic");
 
@@ -3684,10 +3723,24 @@ Some high risk, high return bets can skew TER higher when you're betting on a 0.
 			}
 		}
 
+
 		driver.get("http://www.neopets.com/faerieland/employ/employment.phtml?type=status");
-		if (isElementPresentXP("//*[@id=\"content\"]/table/tbody/tr/td[2]/center[2]/table/tbody/tr[2]/td[2]/a", driver)) {
+
+		int jobPet = 1;
+
+		for (; isElementPresentXP("//*[@id=\"content\"]/table/tbody/tr/td[2]/center[2]/table/tbody/tr[" + jobPet + "]/td[1]/b", driver); jobPet += 2) {
+			String jobPetName = driver.findElement(By.xpath("//*[@id=\"content\"]/table/tbody/tr/td[2]/center[2]/table/tbody/tr[" + jobPet + "]/td[1]/b")).getText().trim();
+			if (jobPetName.equals(PETNAME)) {
+				break;
+			}
+		}
+
+		String source = driver.getPageSource();
+		boolean outOfTime = source.contains("You ran out of time");
+
+		if (!outOfTime && isElementPresentXP("//*[@id=\"content\"]/table/tbody/tr/td[2]/center[2]/table/tbody/tr[" + (jobPet+1) + "]/td[2]/a", driver)) {
 			logMessage("We got the job");
-			driver.findElement(By.xpath("//*[@id=\"content\"]/table/tbody/tr/td[2]/center[2]/table/tbody/tr[2]/td[2]/a")).click();
+			driver.findElement(By.xpath("//*[@id=\"content\"]/table/tbody/tr/td[2]/center[2]/table/tbody/tr[" + (jobPet+1) + "]/td[2]/a")).click();
 
 			String jobDetails = driver.findElement(By.xpath("//*[@id=\"content\"]/table/tbody/tr/td[2]/center[2]/b[2]")).getText().trim();
 
@@ -3981,7 +4034,7 @@ Some high risk, high return bets can skew TER higher when you're betting on a 0.
 
 		boolean newMessage = false;
 		String messageString = "";
-//TODO ignore read messages, only check unread
+		//TODO ignore read messages, only check unread
 		driver.get("http://www.neopets.com/neomessages.phtml");
 
 		if (isElementPresentXP("//*[@id=\"content\"]/table/tbody/tr/td[2]/form/table/tbody/tr[2]/td[4]/a", driver)) {
@@ -4498,8 +4551,8 @@ Some high risk, high return bets can skew TER higher when you're betting on a 0.
 				if (isElementPresentXP("//*[@id=\"content\"]/table/tbody/tr/td[2]/form/table[2]/tbody/tr[" + n + "]/td[2]/b", driver)) {
 					String storedItem = driver.findElement(By.xpath("//*[@id=\"content\"]/table/tbody/tr/td[2]/form/table[2]/tbody/tr[" + n + "]/td[2]/b")).getText();
 					boolean isIgnoredItem = false;
-					for (int ii = 0; ii < IGNORED_ITEMS.size(); ii++) {
-						if (storedItem.contains(IGNORED_ITEMS.get(ii))) {
+					for (int ii = 0; ii < ignoredItems.size(); ii++) {
+						if (storedItem.contains(ignoredItems.get(ii))) {
 							isIgnoredItem = true;
 							break;
 						}
@@ -4574,8 +4627,8 @@ Some high risk, high return bets can skew TER higher when you're betting on a 0.
 			else {
 				String stockedItem = driver.findElement(By.xpath("//*[@id=\"content\"]/table/tbody/tr/td[2]/form/table/tbody/tr[" + shopItems + "]/td[1]")).getText();
 				boolean isIgnoredItem = false;
-				for (int ii = 0; ii < IGNORED_ITEMS.size(); ii++) {
-					if (stockedItem.contains(IGNORED_ITEMS.get(ii))) {
+				for (int ii = 0; ii < ignoredItems.size(); ii++) {
+					if (stockedItem.contains(ignoredItems.get(ii))) {
 						isIgnoredItem = true;
 						break;
 					}
@@ -4706,8 +4759,8 @@ Some high risk, high return bets can skew TER higher when you're betting on a 0.
 			int hour2 = gc.get(Calendar.HOUR_OF_DAY);
 			if (IntStream.of(validHours).anyMatch(x -> x == hour2)) {
 				driver.get("http://www.neopets.com/winter/snowager.phtml");
-				if (isElementPresentXP("//*[@id=\"content\"]/table/tbody/tr/td/p[4]/a", driver)) {
-					driver.findElement(By.xpath("//*[@id=\"content\"]/table/tbody/tr/td/p[4]/a")).click();
+				if (isElementPresentXP("//input[@value='Attempt to steal a piece of treasure']", driver)) {
+					driver.findElement(By.xpath("//input[@value='Attempt to steal a piece of treasure']")).click();
 				}
 			}
 		}
@@ -4874,11 +4927,17 @@ Some high risk, high return bets can skew TER higher when you're betting on a 0.
 	 * @see NeoDailies#isElementPresentName(String, WebDriver) isElementPresentName
 	 */
 	private static boolean isElementPresentXP(String xpath, WebDriver driver) {
-		boolean present;
-		driver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
-		present = driver.findElements(By.xpath(xpath)).size() != 0;
-		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
-		return present;
+		try {
+			boolean present;
+			driver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
+			present = driver.findElements(By.xpath(xpath)).size() != 0;
+			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+			return present;
+		}
+		catch (Exception ex) {
+			handleAlert(driver);
+			return false;
+		}
 	}
 
 	/**
@@ -4960,8 +5019,15 @@ Some high risk, high return bets can skew TER higher when you're betting on a 0.
 		while (true) {
 
 			try {
-
 				driver.get("http://www.neopets.com/quests.phtml");
+				if (driver.getPageSource().contains("You are currently on a quest for Kaia")) {
+					//driver.findElement(By.xpath("//*@id=\"abandon_kaia_quest\"]/div")).click();
+					driver.findElement(By.id("abandon_kaia_quest")).click();
+					sleepMode(5000);
+					driver.findElement(By.xpath("//*[@id=\"abandon_popup\"]/div/table/tbody/tr/td/a[2]/div")).click();
+					sleepMode(3000);
+					return true;
+				}
 
 				String questItemLink = "";
 
@@ -5162,10 +5228,15 @@ Some high risk, high return bets can skew TER higher when you're betting on a 0.
 			logMessage("ShopLink: " + shopLink);
 			shopURLs.add(shopLink);
 			driver.get(shopLink);
+
 			if (isElementPresentXP("//*[@id=\"content\"]/table/tbody/tr/td[2]/div[4]/table/tbody/tr/td/a/img", driver)) {
 				try {
 					driver.findElement(By.xpath("//*[@id=\"content\"]/table/tbody/tr/td[2]/div[4]/table/tbody/tr/td/a/img")).click();
 					handleAlert(driver);
+					if (driver.getPageSource().contains("you can only carry")) {
+						logMessage("Too many items in inv. Running runDeleteItems");
+						runDeleteItems(driver);
+					}
 				}
 				catch(Exception ex) {
 					//This error is normal, and does not need handling
