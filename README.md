@@ -31,7 +31,7 @@ NeoBot was built, tested, and run on an 8 year old netbook with a single core Vi
 
 # Setup and Instructions
 
-Create a subfolder in your Documents folder called Neopets
+Create a sub-folder in your Documents folder called Neopets
 
 Download and unzip the package, go into the NeoBot-master folder, and copy and paste all the contents into your Documents folder
 
@@ -41,9 +41,9 @@ Your antivirus may affect sending email. You may need to disable your antivirus,
 | Prereq | Action | Purpose |
 | ------ | ------ | ------ |
 |[AutoIT3](https://www.autoitscript.com/site/autoit/downloads/) | Download | The main engine that drives the bot|
-|[Java 8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) | Download | What the Twitter and Email functionality use|
+|[Java 8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) | Download | What the Email functionality uses|
 |[Javac](https://learn.yancyparedes.net/2012/03/setting-up-javac-command-on-windows-7/) | Configure | Add javac to your PATH to compile Java scripts|
-|[Firefox 41](https://ftp.mozilla.org/pub/firefox/releases/41.0.2/win32/en-US/Firefox%20Setup%2041.0.2.exe) | Download (if you already have a newer version of Firefox, download this into a direcotry other than the installer's default) | The browser NeoBot uses.
+|[Firefox 41](https://ftp.mozilla.org/pub/firefox/releases/41.0.2/win32/en-US/Firefox%20Setup%2041.0.2.exe) | Download (if you already have a newer version of Firefox, download this into a directory other than the installer's default) | The browser NeoBot uses.
 
 ### Update Code Parameters
 
@@ -144,7 +144,7 @@ Open up a Run window (Windows+r) and do:
 
 8. Make sure "Always check if Firefox is your default browser." is unchecked.
 
-9. Click Advanced in the lefthand menu.
+9. Click Advanced in the left-hand menu.
 
 10. Click Data Choices and make sure everything is unchecked.
 
@@ -170,11 +170,11 @@ This only needs to be changed if you didn't choose the default installation loca
 
 ### Pi Configurations (only use this if you decide to run NeoBot on your Raspberry Pi)
 
-1. Create a bootable usb following the instructions here https://www.raspberrypi.org/documentation/installation/installing-images/
+1. Create a bootable USB following the instructions here https://www.raspberrypi.org/documentation/installation/installing-images/
 
 2. run sudo apt-get update and sudo apt-get upgrade
 
-3. run sudo apt-get install chromium-browser (this will force chromium to uypdate to the newest version. Run even if you have Chromium installed.)
+3. run sudo apt-get install chromium-browser (this will force chromium to update to the newest version. Run even if you have Chromium installed.)
 
 4. Download Chromedriver v2.21 for armv7l (confirmed working on Chromium 56) https://github.com/electron/electron/releases/download/v1.6.0/chromedriver-v2.21-linux-armv7l.zip
 
@@ -267,7 +267,7 @@ This only needs to be changed if you didn't choose the default installation loca
 
 30. Run sudo apt--fix-broken install
 
-30. Open teamviewer GUI and click the gear icon
+30. Open TeamViewer GUI and click the gear icon
 
 31. Set the password for remote conection to your choosing (make sure to save your password and 9 digit ID somewhere remote)
 
