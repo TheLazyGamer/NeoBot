@@ -1,4 +1,7 @@
 # NeoBot - Selenium Neopets Dailies and More Bot Automation Suite
+
+NOTE: As of 2019, Neopets has implemented tighter security for their site. This bot unfortunately doesn't seem to work anymore. There are currently no future plans for updating this bot.
+
 A less-detectable, easy-to-use Neopets bot.  Play while you sleep, while at school, while at work, anywhere.
 
 
