@@ -208,6 +208,16 @@ http://www.neopets.com/~Spiky
 http://www.neopets.com/~jawsnapper0991
 http://www.neopets.com/~BlazeaBruce
 http://www.neopets.com/~windagame
+https://www.neopets.com/~Shrmsh
+https://www.neopets.com/~FC_Simulations_4
+https://www.neopets.com/~Innocent
+https://www.neopets.com/~Otik_m1r3m
+https://www.reddit.com/r/nsheng/comments/11s85gv/general_food_club_faqs/?utm_source=share&utm_medium=web2x&context=3
+https://www.reddit.com/r/nsheng/comments/10vgja3/nsheng_faqs/?utm_source=share&utm_medium=web2x&context=3
+https://neofood.club/#round=5305
+https://www.neopets.com/~kestrull
+https://docs.google.com/spreadsheets/d/1zBXmYaiX9szAbdAyfUG2u5bwR8vgGIEmbM_DehUxPuY/edit?gid=0#gid=0
+https://docs.google.com/document/d/17ecZgIJ5VFYq_F7XBk0W2Fp55UxrJwxLyDruo1wJnnA/edit?tab=t.0#heading=h.ot774nx9dted
 http://www.neocodex.us/forum/topic/117462-food-club-win-every-time-dutch-book/
 https://www.reddit.com/user/thejayeless/comments/ who is http://www.neopets.com/~Aurasia
 https://www.reddit.com/r/neopets/comments/4xsf9w/food_club_bets_august_15_2016/d6i83jx/
