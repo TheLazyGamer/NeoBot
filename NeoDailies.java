@@ -212,6 +212,8 @@ https://www.neopets.com/~Shrmsh
 https://www.neopets.com/~FC_Simulations_4
 https://www.neopets.com/~Innocent
 https://www.neopets.com/~Otik_m1r3m
+https://www.neopets.com/~boochi_target
+https://www.neopets.com/~orvinnthefirstmate
 https://www.reddit.com/r/nsheng/comments/11s85gv/general_food_club_faqs/?utm_source=share&utm_medium=web2x&context=3
 https://www.reddit.com/r/nsheng/comments/10vgja3/nsheng_faqs/?utm_source=share&utm_medium=web2x&context=3
 https://neofood.club/#round=5305
